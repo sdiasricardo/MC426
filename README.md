@@ -3,3 +3,5 @@
 Vinicius Mokel Seidel (245233)
 
 João Pedro Carolino Morais (198932)
+
+Ricardo Santos Dias (247361)
