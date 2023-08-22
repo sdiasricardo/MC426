@@ -2,5 +2,5 @@
 2 - Vinicius Seidel (RA245233)\
 3 - João Pedro Carolino Morais (RA198932)\
 4 - Rafael Gregori de Souza (RA247346)\
-5 - Vinicius Seidel (RA245233)
+5 - Ricardo Santos Dias (RA247361)
 
