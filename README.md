@@ -1,0 +1,1 @@
+O projeto se propoe a realizar uma analise de dados meteorologicos e sua predicao 
