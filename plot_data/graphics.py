@@ -1,6 +1,22 @@
 import plotly.express as px
-df = px.data.gapminder()
-fig = px.area(df, x="year", y="pop", color="continent", line_group="country")
-# fig = px.scatter(df, x="year", y="pop", color="continent")
-fig.add_scatter()
+import plotly.graph_objects as go
+
+
+
+x = [1, 2, 3]
+y = [1, 2, 3]
+
+fig = px.area(x=x, y=y)
+fig.add_trace(
+    go.Scatter(
+        mode='markers',
+        x=x,
+        y=y,
+        marker=dict(
+            color='LightSkyBlue',
+            size=30,
+        ),
+        showlegend=False
+    )
+)
 fig.show()
