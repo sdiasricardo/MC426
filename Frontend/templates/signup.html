@@ -71,9 +71,9 @@
 <body>
     <div class="signup-container">
         <h1>Cadastro</h1>
-        <form method="POST" action="/register">
+        <form method="POST" action="/signup">
             <div class="form-group">
-                <label for="username">Nome:</label>
+                <label for="username">Nome de Usuário:</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
@@ -85,6 +85,22 @@
                 <input type="password" id="password" name="password" required>
             </div>
             <button type="submit">Sign Up</button>
+            <div id="message-container" style="display: none; color: red;"></div>
+
+    <script>
+        let messageContainer = document.getElementById("message-container");
+
+        document.getElementById("username").value = "{{ username }}";
+        document.getElementById("email").value = "{{ email }}";
+
+
+        let message = "{{ message }}" || "";
+
+        if (message) {
+            messageContainer.style.display = "block";
+            messageContainer.innerText = message;
+        }
+    </script>
         </form>
     </div>
 </body>

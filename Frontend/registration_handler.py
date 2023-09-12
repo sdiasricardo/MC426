@@ -7,9 +7,5 @@ class RegistrationHandler:
         self.Connection = connection
 
     def register(self, user):
-        if not self.Connection.user_exists(user.Name, user.Email):
+        return self.Connection.user_exists(user.Name, user.Email)
 
-            self.Connection.create_user(user)
-            return True
-
-        return False
