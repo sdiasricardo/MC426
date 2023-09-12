@@ -5,7 +5,7 @@ import plotly.graph_objects as go
 app = Dash(__name__)
 
 app.layout = html.Div([
-    html.H4("Country's key performance analytics"),
+    html.H1("Country's key performance analytics"),
     html.P("Select data on y-axis:"),
     dcc.Dropdown(
         id='y-axis',
