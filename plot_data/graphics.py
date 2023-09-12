@@ -1,22 +1,5 @@
-import plotly.express as px
-import plotly.graph_objects as go
+from plot_data.best import update_line_chart
 
 
+update_line_chart()
 
-x = [1, 2, 3]
-y = [1, 2, 3]
-
-fig = px.area(x=x, y=y)
-fig.add_trace(
-    go.Scatter(
-        mode='markers',
-        x=x,
-        y=y,
-        marker=dict(
-            color='LightSkyBlue',
-            size=30,
-        ),
-        showlegend=False
-    )
-)
-fig.show()

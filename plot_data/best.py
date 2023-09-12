@@ -12,24 +12,7 @@ y = [1, 2, 3]
 y2 = [0.5, 1, 1.5]
 
 # Add surface trace
-# fig.add_trace(go.Scatter(x=x, y=y, fill='tozeroy', line=dict(color="RebeccaPurple")))
-fig.add_trace(
-    go.Scatter(
-        mode='markers',
-        fill='tozeroy',
-        x=x,
-        y=y,
-        line=dict(color="RebeccaPurple"),
-        marker=dict(
-            size=120,
-            line=dict(
-                color='MediumPurple',
-                width=12
-            )
-        ),
-        showlegend=False
-    )
-)
+fig.add_trace(go.Scatter(x=x, y=y, fill='tozeroy', line=dict(color="RebeccaPurple")))
 
 # Update plot sizing
 fig.update_layout(
