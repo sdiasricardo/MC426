@@ -6,12 +6,6 @@ from registration_handler import RegistrationHandler
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # Replace with your secret key
 
-# Simulated user data for demonstration purposes
-users = {
-    'user1': 'password1',
-    'user2': 'password2'
-}
-
 handler = RegistrationHandler(DatabaseConnection(""))
 
 
@@ -33,7 +27,13 @@ def register():
     if not response:
         return 'Username already exists. Please choose another username.'
 
-    return 'Registration successful!.'
+    return redirect(url_for('signup_success', username=username))
+
+
+@app.route('/signup-success/<username>')
+def signup_success(username):
+    return render_template('signup_success.html', username=username)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
