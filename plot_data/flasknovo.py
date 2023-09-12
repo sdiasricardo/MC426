@@ -3,6 +3,18 @@ import pandas as pd
 import json
 import numpy as np
 
+data = json.load(open('forecastCampinas.json'))
+
+df = pd.DataFrame(data['list'])
+print(df)
+
+
+df2 = pd.DataFrame({'dt': df['dt']})
+df2['temp'] = np.zeros(df.shape[0])
+for i in range(df2.shape[0]):
+    df2['temp'][i] = (df['main'][i]['temp'])
+print(df2)
+
 
 
 def create_plot(selected_column: str, selected_plot_type: str):
@@ -19,17 +31,5 @@ def create_plot(selected_column: str, selected_plot_type: str):
     return fig
 
 if __name__ == '__main__':
-    data = json.load(open('forecastCampinas.json'))
-
-    df = pd.DataFrame(data['list'])
-    print(df)
-
-
-    df2 = pd.DataFrame({'dt': df['dt']})
-    df2['temp'] = np.zeros(df.shape[0])
-    for i in range(df2.shape[0]):
-        df2['temp'][i] = (df['main'][i]['temp'])
-    print(df2)
-    
-    fig = create_plot('temp' , 'histogram')
+    fig = create_plot('temp', 'line')
     fig.show()
