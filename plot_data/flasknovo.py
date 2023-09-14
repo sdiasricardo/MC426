@@ -17,6 +17,7 @@ def parseColumnJSON(json_file, column: str):
     df2 = pd.DataFrame({'dt': df['dt']})
 
     df2[column] = np.zeros(df.shape[0])
+    
     for i in range(df2.shape[0]):
         df2[column][i] = (df['main'][i][column])
 
@@ -37,5 +38,5 @@ def create_plot(json_file, selected_column: str, selected_plot_type: str):
     return fig
 
 if __name__ == '__main__':
-    fig = create_plot('forecastCampinas.json','temp', 'scatter')
+    fig = create_plot('forecastCampinas.json','temp', 'line')
     fig.show()
