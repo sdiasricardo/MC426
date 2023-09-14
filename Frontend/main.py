@@ -1,13 +1,13 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from Models.User import User
-from DatabaseConnection import DatabaseConnection
 from RegistrationHandler import RegistrationHandler
 from Enums.UserSituation import UserSituation
+from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-handler = RegistrationHandler(DatabaseConnection(""))
+handler = RegistrationHandler(DatabaseConnectionMock())  # temporary for testing purposes
 
 
 @app.route('/')
