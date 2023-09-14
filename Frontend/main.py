@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from Models.User import User
-from database_connection import DatabaseConnection
-from registration_handler import RegistrationHandler
+from DatabaseConnection import DatabaseConnection
+from RegistrationHandler import RegistrationHandler
 from Enums.UserSituation import UserSituation
 
 app = Flask(__name__)
@@ -35,14 +35,16 @@ def signup():
 
     session['username'] = username
 
-    return redirect(url_for('signup_success', username=username))
+    return redirect(url_for('signup_success'))
 
 
 @app.route('/signup-success/')
 def signup_success():
 
     if 'username' in session:
-        return render_template('signup_success.html', username=session['username'])
+        username = session['username']
+        session.clear()
+        return render_template('signup_success.html', username=username)
 
     return redirect(url_for('index'))
 
