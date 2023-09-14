@@ -4,9 +4,6 @@ import json
 import numpy as np
 
 
-
-
-
 def parseColumnJSON(json_file, column: str):
     '''
     Retorna um dataframe com colunas dt e column
@@ -31,10 +28,7 @@ def create_plot(json_file, selected_column: str, selected_plot_type: str):
         case "scatter":
             fig = px.scatter(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
         case _:
-            if selected_plot_type is None:
-                fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type ta none')
-            else:
-                fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type {selected_plot_type}')
+            fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type {selected_plot_type}')
     return fig
 
 if __name__ == '__main__':
