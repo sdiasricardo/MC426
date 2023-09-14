@@ -54,6 +54,16 @@
             border-radius: 3px;
         }
 
+        .checkbox-group {
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .checkbox-group label {
+            display: block;
+            margin-top: 5px;
+        }
+
         button[type="submit"] {
             background-color: #007bff;
             color: #fff;
@@ -84,23 +94,30 @@
                 <label for="password">Senha:</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="city">Cidade:</label>
+                <input type="text" id="city" name="city" required>
+            </div>
+            <div class="checkbox-group">
+                <label for="notifications">Receber notificações:</label>
+                <input type="checkbox" id="notifications" name="notifications">
+            </div>
             <button type="submit">Sign Up</button>
             <div id="message-container" style="display: none; color: red;"></div>
 
-    <script>
-        let messageContainer = document.getElementById("message-container");
+            <script>
+                let messageContainer = document.getElementById("message-container");
 
-        document.getElementById("username").value = "{{ username }}";
-        document.getElementById("email").value = "{{ email }}";
+                document.getElementById("username").value = "{{ username }}";
+                document.getElementById("email").value = "{{ email }}";
 
+                let message = "{{ message }}" || "";
 
-        let message = "{{ message }}" || "";
-
-        if (message) {
-            messageContainer.style.display = "block";
-            messageContainer.innerText = message;
-        }
-    </script>
+                if (message) {
+                    messageContainer.style.display = "block";
+                    messageContainer.innerText = message;
+                }
+            </script>
         </form>
     </div>
 </body>

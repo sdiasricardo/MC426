@@ -20,8 +20,10 @@ def signup():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
+    city = request.form['city']  # Get the 'City' field from the form
+    receive_notifications = 'notifications' in request.form  # Check if the 'Receber notificações' checkbox is checked
 
-    user = User(username, email, password)
+    user = User(username, email, password, city, receive_notifications)
 
     response = handler.register(user)
 
@@ -47,6 +49,7 @@ def signup_success():
         return render_template('signup_success.html', username=username)
 
     return redirect(url_for('index'))
+
 
 @app.errorhandler(404)
 def page_not_found(e):
