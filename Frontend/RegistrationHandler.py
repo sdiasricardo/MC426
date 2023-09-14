@@ -11,10 +11,10 @@ class RegistrationHandler:
 
         situation = self.Connection.user_exists(user.Name, user.Email)
 
-        if situation is not UserSituation.USER_UNREGISTERED:
+        if situation is not UserSituation.SUCCESS:
             return situation
 
         self.Connection.create_user(user)
 
-        return user
+        return situation
 

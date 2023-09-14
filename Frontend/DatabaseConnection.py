@@ -39,7 +39,7 @@ class DatabaseConnection:
 
             return UserSituation.USERNAME_TAKEN
 
-        return UserSituation.USER_UNREGISTERED
+        return UserSituation.SUCCESS
 
     def create_user(self, user):
 
