@@ -13,7 +13,9 @@ class DatabaseConnection:
             sa.Column('id', sa.Integer, primary_key=True),
             sa.Column('username', sa.String(50)),
             sa.Column('email', sa.String(100)),
-            sa.Column('password', sa.String(100))
+            sa.Column('password', sa.String(100)),
+            sa.Column('city', sa.String(100)),
+            sa.Column('receive_notifications', sa.Boolean(100))
         )
         self.metadata.create_all(self.engine)
 
