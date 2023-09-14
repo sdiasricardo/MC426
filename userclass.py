@@ -1,7 +1,10 @@
 import csv
 
 class WeatherForecastUser:
-    """This class represents a user of the Weather Forecast app."""
+    """This class represents a user of the Weather Forecast app.
+    Read the user data from a csv file and return the user data.
+    """
+    
     def __init__(
             self, 
             csv_file_path: str,
