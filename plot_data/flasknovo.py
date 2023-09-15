@@ -10,6 +10,7 @@ def parseColumnJSON(json_file, column: str):
     '''
     data = json.load(open(json_file))
     df = pd.DataFrame(data['list'])
+    print(type(df['dt']))
 
     df2 = pd.DataFrame({'dt': df['dt']})
 
@@ -20,17 +21,19 @@ def parseColumnJSON(json_file, column: str):
 
     return df2
 
+
 def create_plot(json_file, selected_column: str, selected_plot_type: str):
     df2 = parseColumnJSON(json_file, selected_column)
     match selected_plot_type:
         case "histogram":
-            fig = px.histogram(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
+            fig = px.histogram(df2, x='dt', y=selected_column, title=f'Plot of {selected_column}')
         case "scatter":
-            fig = px.scatter(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
+            fig = px.scatter(df2, x='dt', y=selected_column, title=f'Plot of {selected_column}')
         case _:
-            fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type {selected_plot_type}')
+            fig = px.line(df2, x='dt', y=selected_column, title=f'plot type {selected_plot_type}')
     return fig
 
+
 if __name__ == '__main__':
-    fig = create_plot('forecastCampinas.json','temp', 'line')
+    fig = create_plot('plot_data/forecastCampinas.json','temp', 'scatter')
     fig.show()
