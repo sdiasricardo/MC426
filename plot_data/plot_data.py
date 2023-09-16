@@ -4,12 +4,26 @@ import json
 import numpy as np
 
 
-def parseColumnJSON(json_file, column: str):
+def parseMainForecastJSON(json_file: str, column: str) -> pd.DataFrame:
     '''
-    Retorna um dataframe com colunas dt e column
+    Retorna um dataframe com colunas de data e column, sendo
+    column um parâmetro 'main' do request para o OpenWeather
     '''
-    data = json.load(open(json_file))
-    df = pd.DataFrame(data['list'])
+    parameters = ["temp", "feels_like", "temp_min", "temp_max", "pressure", "sea_level", "grnd_level",
+                  "humidity", "temp_kf"]
+    if column not in parameters:
+        raise Exception("Column not existent in 'main' parameters of API request")
+    try:
+        data = json.load(open(json_file))
+    except FileNotFoundError:
+        raise Exception("File not found")
+    except OSError:
+        raise Exception("File is not JSON type")
+    
+    try:
+        df = pd.DataFrame(data['list'])
+    except KeyError:
+        raise Exception(" 'list' JSON parameter not found")
 
     df2 = pd.DataFrame({'dt': df['dt_txt']})
 
@@ -20,18 +34,20 @@ def parseColumnJSON(json_file, column: str):
 
     return df2
 
-def create_plot(json_file, selected_column: str, selected_plot_type: str):
-    df2 = parseColumnJSON(json_file, selected_column)
+def create_plot(json_file, selected_column: str, selected_plot_type: str = 'line'):
+    df2 = parseMainForecastJSON(json_file, selected_column)
     match selected_plot_type:
         case "histogram":
             fig = px.histogram(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
         case "scatter":
             fig = px.scatter(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
-        case _:
+        case "line":
             fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type {selected_plot_type}')
+        case _:
+            raise Exception("Invalid selected_plot_type")
     return fig
 
 
 if __name__ == '__main__':
-    fig = create_plot('forecastCampinas.json', 'feels_like', 'line')
+    fig = create_plot('forecastCampinas.json', 'pressure', 'line')
     fig.show()
