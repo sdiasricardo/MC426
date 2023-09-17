@@ -1,26 +1,26 @@
 import unittest
 import json
-import plot_data
-
+from .plot_data import parseMainForecastJSON
+from .plot_data import create_plot
 
 class TestStringMethods(unittest.TestCase):
 
     def test_parseMainForecastJSON(self):
         with self.assertRaises(Exception):
-            plot_data.parseMainForecastJson("forecastCampinas.json", "altitude")
+            parseMainForecastJSON("forecastCampinas.json", "altitude")
         
         with self.assertRaises(Exception):
-            plot_data.parseMainForecastJson("forecastCampinassssss.json", "temp")
+            parseMainForecastJSON("forecastCampinassssss.json", "temp")
 
         with self.assertRaises(Exception):
-            plot_data.parseMainForecastJson("mockFileTest.txt", "temp")
+            parseMainForecastJSON("mockFileTest.txt", "temp")
 
         with self.assertRaises(Exception):
-            plot_data.parseMainForecastJson("mockForecastCampinas.json", "temp")
+            parseMainForecastJSON("mockForecastCampinas.json", "temp")
     
     def test_create_plot(self):
         with self.assertRaises(Exception):
-            plot_data.create_plot("forecastCampinas.json", "temp", "mock")
+            create_plot("forecastCampinas.json", "temp", "mock")
 
 if __name__ == '__main__':
     unittest.main()
