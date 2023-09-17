@@ -17,7 +17,7 @@ def parseMainForecastJSON(json_file: str, column: str) -> pd.DataFrame:
         data = json.load(open(json_file))
     except FileNotFoundError:
         raise Exception("File not found")
-    except OSError:
+    except json.decoder.JSONDecodeError:
         raise Exception("File is not JSON type")
     
     try:
@@ -34,7 +34,7 @@ def parseMainForecastJSON(json_file: str, column: str) -> pd.DataFrame:
 
     return df2
 
-def create_plot(json_file, selected_column: str, selected_plot_type: str = 'line'):
+def create_plot(json_file: str, selected_column: str, selected_plot_type: str = 'line'):
     df2 = parseMainForecastJSON(json_file, selected_column)
     match selected_plot_type:
         case "histogram":
@@ -49,5 +49,5 @@ def create_plot(json_file, selected_column: str, selected_plot_type: str = 'line
 
 
 if __name__ == '__main__':
-    fig = create_plot('forecastCampinas.json', 'pressure', 'line')
+    fig = create_plot('test/forecastCampinas.json', 'pressure', 'line')
     fig.show()
