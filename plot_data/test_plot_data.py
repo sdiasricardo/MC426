@@ -2,7 +2,7 @@ import unittest
 import json
 import plot_data
 
-
+# Testando todas as excecoes do arquivo principal
 class TestStringMethods(unittest.TestCase):
 
     def test_parseMainForecastJSON(self):
