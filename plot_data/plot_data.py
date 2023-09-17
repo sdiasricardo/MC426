@@ -38,7 +38,7 @@ def create_plot(json_file: str, selected_column: str, selected_plot_type: str = 
     df2 = parseMainForecastJSON(json_file, selected_column)
     match selected_plot_type:
         case "histogram":
-            fig = px.histogram(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
+            fig = px.histogram(df2, x='dt', y=selected_column, title=f'Plot of {selected_column}')
         case "scatter":
             fig = px.scatter(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
         case "line":
