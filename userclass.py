@@ -7,8 +7,8 @@ class WeatherForecastUser:
     
     def __init__(
             self, 
-            csv_file_path: str,
-            email: str
+            csv_file_path: str = 'user_data_sample.csv',
+            email: str = 'viniciusseidel2@gmail.com'
             ):
         
         self.email = email
