@@ -6,6 +6,5 @@ email_sender.py:
 ----Nome----E-mail----Regiao(Cidade)----Deseja_receber_notificacoes----Gravidade_notificacao
 
 plot_data.py:
-
 -> Fazer parse do JSON enviado pelo OpenWeatherAPI
 -> Retornar uma figura com o gráfico desejado pelo usuário (histograma, linha, scatter)
