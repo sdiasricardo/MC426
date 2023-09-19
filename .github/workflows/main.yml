@@ -22,11 +22,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          pip install Frontend/
 
       - name: Run tests on the front-end part
         run: |
-          cd Frontend
-          python -m unittest tests.RegistrationHandlerTest
+          python -m unittest discover -s Frotend/tests
       
       - name: Run tests on the plotting data part
         run: |
