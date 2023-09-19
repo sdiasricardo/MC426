@@ -1,4 +1,5 @@
-email_sender.py: 
+email_sender.py:
+
 -> Notificar por e-mail salvo 
 -> Controlar datas e horarios de acordo com uma flag dada pelo banco de dados
 
