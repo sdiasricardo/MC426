@@ -1,7 +1,7 @@
 import unittest
 import json
-from .plot_data import parseMainForecastJSON
-from .plot_data import create_plot
+from plot_data import parseMainForecastJSON
+from plot_data import create_plot
 
 class TestStringMethods(unittest.TestCase):
 
