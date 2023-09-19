@@ -1,11 +1,7 @@
 name: C.I. with features from the project
 
 on:
-  #workflow_dispatch:
-  #pull_request:
-  push:
-    branches:
-      - develop
+  push
 
 jobs:
   build:
