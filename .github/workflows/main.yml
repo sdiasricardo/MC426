@@ -5,6 +5,7 @@ on:
 
 jobs:
   build:
+    name: Build and install dependencies
     runs-on: ubuntu-latest
     
     steps:
@@ -21,6 +22,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+  test:
+    name: Test the features
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
       - name: Run tests on the front-end part
         run: |
           python -m unittest discover -s Frontend/tests
