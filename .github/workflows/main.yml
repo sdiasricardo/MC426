@@ -29,7 +29,7 @@ jobs:
 
     steps:
       - name: Enter the Frontend folder
-        run: cd Frontend
+        run: ls
 
       - name: Run tests on the front-end part
         run: |
