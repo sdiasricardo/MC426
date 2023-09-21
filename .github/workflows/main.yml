@@ -29,7 +29,10 @@ jobs:
 
     steps:
       - name: Enter the Frontend folder
-        run: pwd
+        run: |
+          pwd
+          cd ..
+          ls
 
       - name: Run tests on the front-end part
         run: |
