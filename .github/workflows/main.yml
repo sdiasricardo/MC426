@@ -31,7 +31,6 @@ jobs:
       - name: Enter the Frontend folder
         run: |
           pwd
-          cd ..
           ls
 
       - name: Run tests on the front-end part
