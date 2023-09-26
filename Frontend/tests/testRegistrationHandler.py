@@ -1,6 +1,6 @@
 import unittest
 
-from ..Models.User import User
+from Models.User import User
 from RegistrationHandler import RegistrationHandler
 from Enums.UserSituation import UserSituation
 
