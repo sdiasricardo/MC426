@@ -51,5 +51,4 @@ jobs:
           
       - name: Run tests on the front-end part
         run: |
-          pip install sqlalchemy
           python -m unittest discover -s Frontend/tests
