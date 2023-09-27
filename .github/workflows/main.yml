@@ -47,9 +47,9 @@ jobs:
       - name: Run tests on the plotting data part
         run: |
           cd plot_data
-          pip install sqlalchemy
           python test_plot_data.py
           
       - name: Run tests on the front-end part
         run: |
+          pip install sqlalchemy
           python -m unittest discover -s Frontend/tests
