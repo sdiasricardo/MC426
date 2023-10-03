@@ -2,7 +2,7 @@ import os
 from email.message import EmailMessage
 import ssl
 import smtplib
-from userclass import WeatherForecastUser 
+from notifications.userclass import WeatherForecastUser 
 
 
 # Constants to send email

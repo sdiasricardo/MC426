@@ -1,7 +1,7 @@
 import unittest
 import json
-import email_sender
-import userclass
+import notifications.email_sender as email_sender
+import notifications.userclass as userclass
 
 class TestEmailSender(unittest.TestCase):
 
