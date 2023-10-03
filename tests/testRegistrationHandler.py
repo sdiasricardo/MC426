@@ -1,6 +1,5 @@
 import unittest
 import sys
-import sys
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
