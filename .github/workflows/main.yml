@@ -44,11 +44,7 @@ jobs:
         run: |
           python test_email_sender.py
           
-      - name: Run tests on the plotting data part
-        run: |
-          cd plot_data
-          python test_plot_data.py
           
-      - name: Run tests on the front-end part
+      - name: Run tests
         run: |
-          python -m unittest discover -s Frontend/tests
+          python -m unittest discover -s tests
