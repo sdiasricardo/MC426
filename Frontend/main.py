@@ -1,13 +1,22 @@
 from flask import Flask, render_template, request, redirect, url_for, session
-from Models.User import User
+import sys
+import os
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+sys.path.append(parent_directory + "/Entities")
+sys.path.append(parent_directory + "/Services")
+sys.path.append(parent_directory + "/ExternalConnections")
+
+from User import User
 from RegistrationHandler import RegistrationHandler
 from Enums.UserSituation import UserSituation
-from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
+from DatabaseConnection import DatabaseConnection
+#from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-handler = RegistrationHandler(DatabaseConnectionMock())  # temporary for testing purposes
+handler = RegistrationHandler(DatabaseConnection())  # temporary for testing purposes
 
 
 @app.route('/')
