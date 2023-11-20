@@ -3,9 +3,11 @@ import sys
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
-sys.path.append(parent_directory + "/Frontend")
-sys.path.append(parent_directory + "/Frontend" + "/Models")
-from Models.User import User
+sys.path.append(parent_directory + "/Entities")
+sys.path.append(parent_directory + "/Entities/Enums")
+sys.path.append(parent_directory + "/Services")
+#sys.path.append(parent_directory + "/Frontend" + "/Models")
+from User import User
 from RegistrationHandler import RegistrationHandler
 from Enums.UserSituation import UserSituation
 
