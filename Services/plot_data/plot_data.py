@@ -2,52 +2,50 @@ import plotly.express as px
 import pandas as pd
 import json
 import numpy as np
+import os, sys
+import json
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+absolute_directory = os.path.dirname(parent_directory)
+sys.path.append(absolute_directory)
+sys.path.append(absolute_directory + "/ExternalConnections/api")
 
-def parseMainForecastJSON(json_file: str, column: str) -> pd.DataFrame:
-    '''
-    Retorna um dataframe com colunas de data e column, sendo
-    column um parâmetro 'main' do request para o OpenWeather
-    '''
-    parameters = ["temp", "feels_like", "temp_min", "temp_max", "pressure", "sea_level", "grnd_level",
-                  "humidity", "temp_kf"]
-    if column not in parameters:
-        raise Exception("Column not existent in 'main' parameters of API request")
-    try:
-        data = json.load(open(json_file))
-    except FileNotFoundError:
-        raise Exception("File not found")
-    except json.decoder.JSONDecodeError:
-        raise Exception("File is not JSON type")
-    
-    try:
-        df = pd.DataFrame(data['list'])
-    except KeyError:
-        raise Exception(" 'list' JSON parameter not found")
+from ExternalConnections.api.apiHandler import ApiHandler
 
-    df2 = pd.DataFrame({'dt': df['dt_txt']})
+class DataPlotter:
+    def __init__(self):
+        self.data = None
+        self.apiHandler = ApiHandler()
 
-    df2[column] = np.zeros(df.shape[0])
-    
-    for i in range(df2.shape[0]):
-        df2[column][i] = (df['main'][i][column])
+    def set_data(self, query_type: str, query_place):
+        self.data = self.apiHandler.queryCityWeather(query_type, query_place)
 
-    return df2
+    def _get_day_temperatures(self) -> pd.DataFrame:
+        dt, temp = list(), list()
+        for dc in self.data['forecast']['forecastday'][0]['hour']:
+            dt.append(dc['time'])
+            temp.append(dc['temp_c'])
+        dt, temp = pd.Series(dt), pd.Series(temp)
+        return pd.DataFrame({'Datetime': dt, 'Temp(Celsius)': temp})
 
-def create_plot(json_file: str, selected_column: str, selected_plot_type: str = 'line'):
-    df2 = parseMainForecastJSON(json_file, selected_column)
-    match selected_plot_type:
-        case "histogram":
-            fig = px.histogram(df2, x='dt', y=selected_column, title=f'Plot of {selected_column}')
-        case "scatter":
-            fig = px.scatter(df2, x='dt', y=df2[selected_column], title=f'Plot of {selected_column}')
-        case "line":
-            fig = px.line(df2, x='dt', y=df2[selected_column], title=f'plot type {selected_plot_type}')
-        case _:
-            raise Exception("Invalid selected_plot_type")
-    return fig
+    def create_plot(self, selected_column: str, selected_plot_type: str = 'line'):
+        df = self._get_day_temperatures()
+        match selected_plot_type:
+            case "histogram":
+                fig = px.histogram(df, x='Datetime', y=selected_column, title=f'Plot of {selected_column}')
+            case "scatter":
+                fig = px.scatter(df, x='Datetime', y=df[selected_column], title=f'Plot of {selected_column}')
+            case "line":
+                fig = px.line(df, x='Datetime', y=df[selected_column], title=f'plot type {selected_plot_type}')
+            case _:
+                raise Exception("Invalid selected_plot_type")
+        return fig
 
 
 if __name__ == '__main__':
-    fig = create_plot('test/forecastCampinas.json', 'pressure', 'line')
-    fig.show()
+    data = json.load(open('data.json'))
+    campinas = DataPlotter()
+    campinas.data = data
+    campinas.create_plot('Temp(Celsius)').show()
+
