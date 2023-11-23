@@ -1,10 +1,15 @@
 import sqlalchemy as sa
 import logging
+import sys
+import os
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+sys.path.append(parent_directory + "/Entities")
 from Enums.UserSituation import UserSituation
 
 
 class DatabaseConnection:
-    def __init__(self, db_url):
+    def __init__(self):
         self.engine = sa.create_engine("mysql://root:12345678@localhost/eng_software_teste")
         self.metadata = sa.MetaData()
         self.users = sa.Table(

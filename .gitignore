@@ -1,4 +1,6 @@
-.vscode/settings.json
-seidel.pub
+**__pycache__**
+.env
+.idea
+*.pyc
 seidel
-.idea/
+seidel.pub
