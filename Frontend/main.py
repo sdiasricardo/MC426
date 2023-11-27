@@ -59,6 +59,33 @@ def signup_success():
 
     return redirect(url_for('index'))
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # Assuming you have a proper authentication mechanism here
+        # For simplicity, I'm checking if the username and password match.
+        username = request.form['username']
+        password = request.form['password']
+
+        # Check if the username and password are valid (you may use a more secure method)
+        if username == "example_user" and password == "example_password":
+            session['username'] = username
+            return redirect(url_for('home'))
+
+        # If the credentials are not valid, you can render the login page with an error message.
+        return render_template('login.html', message='Invalid username or password')
+
+    return render_template('login.html')
+
+@app.route('/home')
+def home():
+    if 'username' in session:
+        username = session['username']
+        return render_template('home.html', username=username)
+
+    # If the user is not logged in, redirect to the login page
+    return redirect(url_for('login'))
+
 
 @app.errorhandler(404)
 def page_not_found(e):
