@@ -68,8 +68,7 @@ def login():
         password = request.form['password']
 
         # Check if the username and password are valid (you may use a more secure method)
-        print(password)
-        if user_service.validate_user(username, password):
+        if user_service.login(username, password):
             session['username'] = username
             return redirect(url_for('home'))
 

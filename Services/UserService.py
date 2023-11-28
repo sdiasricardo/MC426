@@ -25,7 +25,7 @@ class UserService:
 
         return situation
 
-    def validate_user(self, username, password):
+    def login(self, username, password):
 
         situation = self.Connection.validate_user_login(username, password)
 
