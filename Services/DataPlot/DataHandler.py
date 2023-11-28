@@ -15,13 +15,14 @@ class DataHandler:
         self.apiHandler = apiHandler
         self.data = None
     
-    def _set_data(self, query_type: str | None = None, query_place: str | None = None):
+    def _call_api(self, query_type: str | None = None, query_place: str | None = None):
         if query_place is None or query_type is None:
             raise Exception('query_type or query_place is None')
         self.data = self.apiHandler.queryCityWeather(query_type, query_place)
 
     def get_current_climate(self, query_place: str | None = None):
-        self._set_data('current', query_place)
+        self._call_api('current', query_place)
+        return self.data
 
     #retorna uma lista de alertas
     def get_alerts(self, query_place: str | None = None):
