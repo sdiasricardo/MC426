@@ -8,15 +8,15 @@ sys.path.append(parent_directory + "/Services")
 sys.path.append(parent_directory + "/ExternalConnections")
 
 from User import User
-from RegistrationHandler import RegistrationHandler
-from Enums.UserSituation import UserSituation
+from UserService import UserService
+from Enums.user_signup_situation import user_signup_situation
 from DatabaseConnection import DatabaseConnection
 #from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-handler = RegistrationHandler(DatabaseConnection())  # temporary for testing purposes
+user_service = UserService(DatabaseConnection())  # temporary for testing purposes
 
 
 @app.route('/')
@@ -34,13 +34,13 @@ def signup():
 
     user = User(username, email, password, city, receive_notifications)
 
-    response = handler.register(user)
+    response = user_service.register(user)
 
-    if response is UserSituation.USERNAME_TAKEN:
+    if response is user_signup_situation.USERNAME_TAKEN:
         return render_template('signup.html', message='Nome de usuário já registrado, por favor escolha outro.',
                                username="", email=email)
 
-    elif response is UserSituation.EMAIL_TAKEN:
+    elif response is user_signup_situation.EMAIL_TAKEN:
         return render_template('signup.html', message='Já existe uma conta registrada com esse email',
                                username=username, email="")
 
@@ -68,7 +68,8 @@ def login():
         password = request.form['password']
 
         # Check if the username and password are valid (you may use a more secure method)
-        if username == "example_user" and password == "example_password":
+        print(password)
+        if user_service.validate_user(username, password):
             session['username'] = username
             return redirect(url_for('home'))
 
