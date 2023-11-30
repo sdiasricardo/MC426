@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Add your head content here if needed -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add your styles or link to external stylesheets here -->
     <style>
-    /* Reset some default styles for better cross-browser consistency */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: Arial, sans-serif; /* Specify the font here */
+            font-family: Arial, sans-serif;
         }
         body {
             font-family: Arial, sans-serif;
@@ -23,7 +24,7 @@
             margin: 0;
         }
 
-        .signup-container {
+        .login-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 5px;
@@ -45,23 +46,12 @@
         }
 
         input[type="text"],
-        input[type="email"],
         input[type="password"] {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 3px;
-        }
-
-        .checkbox-group {
-            text-align: left;
-            margin-top: 10px;
-        }
-
-        .checkbox-group label {
-            display: block;
-            margin-top: 5px;
         }
 
         button[type="submit"] {
@@ -76,40 +66,39 @@
         button[type="submit"]:hover {
             background-color: #0056b3;
         }
+
+        p {
+            margin-top: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
-    <div class="signup-container">
-        <h1>Cadastro</h1>
-        <form method="POST" action="/signup">
+    <div class="login-container">
+        <h1>Login</h1>
+        <form method="POST" action="/login">
             <div class="form-group">
                 <label for="username">Nome de Usuário:</label>
                 <input type="text" id="username" name="username" required>
             </div>
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
                 <label for="password">Senha:</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <div class="form-group">
-                <label for="city">Cidade:</label>
-                <input type="text" id="city" name="city" required>
-            </div>
-            <div class="checkbox-group">
-                <label for="notifications">Receber notificações:</label>
-                <input type="checkbox" id="notifications" name="notifications">
-            </div>
-            <button type="submit">Sign Up</button>
-            <div id="message-container" style="display: none; color: red;"></div>
 
+            <button type="submit">Login</button>
+
+            <div id="message-container" style="display: none; color: red;"></div>
             <script>
                 let messageContainer = document.getElementById("message-container");
-
-                document.getElementById("username").value = "{{ username }}";
-                document.getElementById("email").value = "{{ email }}";
 
                 let message = "{{ message }}" || "";
 
@@ -119,6 +108,8 @@
                 }
             </script>
         </form>
+
+        <p>Não tem uma conta? <a href="{{ url_for('index') }}">Faça o cadastro aqui</a>.</p>
     </div>
 </body>
 </html>
