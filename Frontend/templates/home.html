@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add the link to FontAwesome or your preferred icon library here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,13 +18,26 @@
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             margin: 0;
         }
 
-        .home-container {
+        .sidebar {
+            width: 60px;
+            height: 100vh;
+            background-color: #333;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Hide overflowing content */
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .weather-container {
             background-color: #ffffff;
             padding: 20px;
             border-radius: 5px;
@@ -31,28 +47,72 @@
 
         h1 {
             margin-bottom: 20px;
-        }
-
-        p {
-            margin-top: 10px;
-        }
-
-        a {
             color: #007bff;
-            text-decoration: none;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .weather-info {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .sidebar-item {
+            margin-top: 10px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-minimized .sidebar-item,
+        .sidebar-minimized h2 {
+            opacity: 0;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="home-container">
-        <h1>Welcome to Your Home Screen!</h1>
-        <p>This is the place where you can enjoy the features of your application.</p>
-        <p>Feel free to explore and make the most out of it.</p>
-        <p>Logout <a href="{{ url_for('index') }}">here</a>.</p>
+    <div class="sidebar" id="sidebar">
+        <h2>Weather App</h2>
+        <a class="sidebar-item" href="#profile"><i class="fas fa-user"></i></a>
+        <a class="sidebar-item" href="{{ url_for('login') }}"><i class="fas fa-sign-out-alt"></i></a>
+        <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
     </div>
+
+    <div class="content">
+        <div class="weather-container">
+            <h1>Welcome to the Weather App!</h1>
+            <p class="weather-info">Current Weather: Sunny, 25°C</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        // Set initial state based on whether the sidebar is minimized or not
+        const sidebar = document.getElementById('sidebar');
+        const isMinimized = sidebar.style.width === '60px';
+        if (isMinimized) {
+            sidebar.classList.add('sidebar-minimized');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('sidebar-minimized');
+            sidebar.style.width = sidebar.style.width === '60px' ? '250px' : '60px';
+        }
+    </script>
 </body>
 </html>
