@@ -5,18 +5,51 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
 sys.path.append(parent_directory + "/Services")
+sys.path.append(parent_directory + "/Services/DataPlot")
 sys.path.append(parent_directory + "/ExternalConnections")
 
 from User import User
 from UserService import UserService
 from Enums.user_signup_situation import user_signup_situation
 from DatabaseConnection import DatabaseConnection
+from DataPlotter import DataPlotter as data_plotter
 #from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
+
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output
+import plotly.express as px
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
 user_service = UserService(DatabaseConnection())  # temporary for testing purposes
+data_plotter = data_plotter()
+
+#fig = px.scatter(x=[1, 2, 3, 4], y=[10, 11, 12, 13], labels={'x': 'X-axis', 'y': 'Y-axis'})
+#fig = data_plotter.create_plot('Temp(Celsius)')
+
+dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
+
+dash_app.layout = html.Div([
+    dcc.Graph(id='graph-container', figure=fig),  # Added id='graph-container'
+    # Add a dropdown input for demonstration purposes
+])
+
+"""dcc.Dropdown(
+        id='dropdown',
+        options=[
+            {'label': 'Option 1', 'value': 'option1'},
+            {'label': 'Option 2', 'value': 'option2'},
+        ],
+        value='option1'
+    ),"""
+
+@dash_app.callback(
+    dash.dependencies.Output('graph-container', 'figure'),
+    [dash.dependencies.Input('dropdown', 'value')]
+)
 
 
 @app.route('/')
@@ -81,7 +114,8 @@ def login():
 def home():
     if 'username' in session:
         username = session['username']
-        return render_template('home.html', username=username)
+        return render_template('home.html', username=username, dash_url='http://127.0.0.1:5000/dash/')
+
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))

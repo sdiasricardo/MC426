@@ -35,14 +35,18 @@
         .content {
             flex: 1;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .weather-container {
             background-color: #ffffff;
-            padding: 20px;
+            padding: 80px;
             border-radius: 5px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
+            height: 80vh;
         }
 
         h1 {
@@ -82,6 +86,11 @@
         button:hover {
             background-color: #555;
         }
+
+        iframe {
+            width: 100%; /* Set the width of the iframe to 100% of the container */
+            height: 85%; /* Set the desired height of the iframe */
+        }
     </style>
 </head>
 <body>
@@ -96,20 +105,18 @@
         <div class="weather-container">
             <h1>Welcome to the Weather App!</h1>
             <p class="weather-info">Current Weather: Sunny, 25°C</p>
+                <iframe src="{{dash_url}}"></iframe>
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
     <script>
-        // Set initial state based on whether the sidebar is minimized or not
+        // Set initial state to minimized
         const sidebar = document.getElementById('sidebar');
-        const isMinimized = sidebar.style.width === '60px';
-        if (isMinimized) {
-            sidebar.classList.add('sidebar-minimized');
-        }
+        sidebar.style.width = '60px';  // Ensure initial width is set
+        sidebar.classList.add('sidebar-minimized');
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('sidebar-minimized');
             sidebar.style.width = sidebar.style.width === '60px' ? '250px' : '60px';
         }

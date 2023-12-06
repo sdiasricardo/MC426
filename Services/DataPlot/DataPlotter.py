@@ -12,14 +12,15 @@ sys.path.append(absolute_directory)
 sys.path.append(absolute_directory + "/ExternalConnections/api")
 
 from ExternalConnections.api.apiHandler import ApiHandler
-import DataHandler
+from DataHandler import DataHandler as DataHandler
 
 #TODO refactor code to dataHandler be a separate class
 class DataPlotter:
     def __init__(self):
         self.data = None
-        self.dataHandler = DataHandler()
         self.apiHandler = ApiHandler()
+        self.dataHandler = DataHandler(self.apiHandler)
+
 
     def set_data(self, query_type: str, query_place):
         self.data = self.apiHandler.queryCityWeather(query_type, query_place)
