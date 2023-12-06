@@ -17,9 +17,10 @@ from DataHandler import DataHandler as DataHandler
 #TODO refactor code to dataHandler be a separate class
 class DataPlotter:
     def __init__(self):
-        self.data = None
-        self.apiHandler = ApiHandler()
-        self.dataHandler = DataHandler(self.apiHandler)
+        #self.data = None
+        # self.apiHandler = ApiHandler()
+        # self.dataHandler = DataHandler(self.apiHandler)
+        self.data = json.load(open('../Services/DataPlot/data.json'))
 
 
     def set_data(self, query_type: str, query_place):
@@ -47,9 +48,9 @@ class DataPlotter:
         return fig
 
 
-if __name__ == '__main__':
-    data = json.load(open('data.json'))
-    campinas = DataPlotter()
-    campinas.data = data
-    campinas.create_plot('Temp(Celsius)').show()
+
+
+# campinas = DataPlotter()
+# campinas.data = data
+# campinas.create_plot('Temp(Celsius)').show()
 
