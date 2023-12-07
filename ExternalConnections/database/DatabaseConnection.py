@@ -2,10 +2,14 @@ import sqlalchemy as sa
 import logging
 import sys
 import os
+
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
-sys.path.append(parent_directory + "/Entities")
-from Enums.UserSituation import UserSituation
+absolute_directory = os.path.dirname(parent_directory)
+sys.path.append(absolute_directory) 
+
+from Entities.Enums.UserSituation import UserSituation
+from Entities.User import User
 
 
 class DatabaseConnection:
@@ -64,6 +68,19 @@ class DatabaseConnection:
             print(f"Error inserting user: {e}")
 
         connection.close()
+
+    def get_all_users(self):
+        query = sa.select(self.users)
+
+        connection = self.engine.connect()
+
+        result = connection.execute(query)
+
+        users = result.fetchall()
+
+        connection.close()
+
+        return users
 
 
 
