@@ -16,21 +16,15 @@ import DataHandler
 
 #TODO refactor code to dataHandler be a separate class
 class DataPlotter:
-    def __init__(self):
+    def __init__(self, DataHandler):
         self.data = None
-        self.dataHandler = DataHandler()
-        self.apiHandler = ApiHandler()
-
+        self.datahandler = DataHandler
+        
+    # chamar DataHandler
     def set_data(self, query_type: str, query_place):
-        self.data = self.apiHandler.queryCityWeather(query_type, query_place)
+        
+        pass
 
-    def _get_day_temperatures(self) -> pd.DataFrame:
-        dt, temp = list(), list()
-        for dc in self.data['forecast']['forecastday'][0]['hour']:
-            dt.append(dc['time'])
-            temp.append(dc['temp_c'])
-        dt, temp = pd.Series(dt), pd.Series(temp)
-        return pd.DataFrame({'Datetime': dt, 'Temp(Celsius)': temp})
 
     def create_plot(self, selected_column: str, selected_plot_type: str = 'line'):
         df = self._get_day_temperatures()
