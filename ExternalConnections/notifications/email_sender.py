@@ -30,6 +30,7 @@ for user in users:
     print(user.Password)
     print(user.City)
     print(user.ReceiveNotifications)
+    print("\n")
 
 
 def send_email(user: User):
