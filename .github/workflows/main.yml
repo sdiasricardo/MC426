@@ -28,7 +28,9 @@ jobs:
     needs: build
 
     steps:          
+      - name: Checkout the code
+        uses: actions/checkout@v2
+        
       - name: Run unittest tests
-        working-directory: ${{ github.workspace }}
         run: |
           python -m unittest discover -s tests
