@@ -7,9 +7,12 @@ current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 absolute_directory = os.path.dirname(parent_directory)
 sys.path.append(absolute_directory) 
+sys.path.append(parent_directory + "/Entities")
 
-from Entities.Enums.UserSituation import UserSituation
+
 from Entities.User import User
+from Enums.user_signup_situation import user_signup_situation
+
 
 
 class DatabaseConnection:
@@ -24,14 +27,14 @@ class DatabaseConnection:
             sa.Column('email', sa.String(100)),
             sa.Column('password', sa.String(100)),
             sa.Column('city', sa.String(100)),
-            sa.Column('receive_notifications', sa.Boolean(100))
+            sa.Column('receive_notifications', sa.Boolean(100)),
         )
         self.metadata.create_all(self.engine)
 
         logging.basicConfig()
         logging.getLogger('sqlalchemy.engine').setLevel(logging.INFO)
 
-    def user_exists(self, name, email):
+    def validate_user_signup(self, name, email):
         query = sa.select(self.users).where(
             sa.or_(self.users.c.username == name, self.users.c.email == email)
         )
@@ -46,11 +49,11 @@ class DatabaseConnection:
 
         if possible_user is not None:
             if possible_user.email == email:
-                return UserSituation.EMAIL_TAKEN
+                return user_signup_situation.EMAIL_TAKEN
 
-            return UserSituation.USERNAME_TAKEN
+            return user_signup_situation.USERNAME_TAKEN
 
-        return UserSituation.SUCCESS
+        return user_signup_situation.SUCCESS
 
     def create_user(self, user):
 
@@ -69,6 +72,7 @@ class DatabaseConnection:
 
         connection.close()
 
+
     def get_all_users(self):
         query = sa.select(self.users)
 
@@ -83,5 +87,18 @@ class DatabaseConnection:
         return users
 
 
+    def validate_user_login(self, username, password):
+        query = sa.select(self.users).where(
+            sa.and_(self.users.c.username == username, self.users.c.password == password)
+        )
+
+        connection = self.engine.connect()
 
 
+        result = connection.execute(query)
+
+        possible_user = result.fetchone()
+
+        connection.close()
+
+        return possible_user is not None

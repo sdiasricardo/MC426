@@ -102,6 +102,11 @@
                 <label for="notifications">Receber notificações:</label>
                 <input type="checkbox" id="notifications" name="notifications">
             </div>
+
+            <div class="form-group">
+                <p>Já tem uma conta? <a href="{{ url_for('login') }}">Faça login aqui</a>.</p>
+            </div>
+
             <button type="submit">Sign Up</button>
             <div id="message-container" style="display: none; color: red;"></div>
 
