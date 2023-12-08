@@ -1,53 +1,24 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sys
 import os
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
 sys.path.append(parent_directory + "/Services")
-sys.path.append(parent_directory + "/Services/DataPlot")
 sys.path.append(parent_directory + "/ExternalConnections")
 
 from User import User
 from UserService import UserService
 from Enums.user_signup_situation import user_signup_situation
 from DatabaseConnection import DatabaseConnection
-from DataPlotter import DataPlotter as data_plotter
-
-
+#from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())
-data_plotter = data_plotter()
-
-dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
-
-fig = data_plotter.create_plot('Paris', 'rain', '2023-12-12')
-
-dash_app.layout = html.Div([
-    dcc.Graph(id='graph-container', figure=fig)
-])
-
-"""dcc.Dropdown(
-        id='dropdown',
-        options=[
-            {'label': 'Option 1', 'value': 'option1'},
-            {'label': 'Option 2', 'value': 'option2'},
-        ],
-        value='option1'
-    ),"""
+user_service = UserService(DatabaseConnection())  # temporary for testing purposes
 
 
-@dash_app.callback(
-    dash.dependencies.Output('graph-container', 'figure'),
-    [dash.dependencies.Input('dropdown', 'value')]
-)
 @app.route('/')
 def index():
     return render_template('signup.html', username="", email="")
@@ -80,13 +51,13 @@ def signup():
 
 @app.route('/signup-success/')
 def signup_success():
+
     if 'username' in session:
         username = session['username']
         session.clear()
         return render_template('signup_success.html', username=username)
 
     return redirect(url_for('index'))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,17 +77,11 @@ def login():
 
     return render_template('login.html')
 
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
 @app.route('/home')
 def home():
     if 'username' in session:
         username = session['username']
-        return render_template('home.html', username=username, dash_url='http://127.0.0.1:5000/dash/')
+        return render_template('home.html', username=username)
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
