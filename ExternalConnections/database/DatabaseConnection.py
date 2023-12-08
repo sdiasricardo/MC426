@@ -2,10 +2,17 @@ import sqlalchemy as sa
 import logging
 import sys
 import os
+
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
+absolute_directory = os.path.dirname(parent_directory)
+sys.path.append(absolute_directory) 
 sys.path.append(parent_directory + "/Entities")
+
+
+from Entities.User import User
 from Enums.user_signup_situation import user_signup_situation
+
 
 
 class DatabaseConnection:
@@ -65,12 +72,28 @@ class DatabaseConnection:
 
         connection.close()
 
+
+    def get_all_users(self):
+        query = sa.select(self.users)
+
+        connection = self.engine.connect()
+
+        result = connection.execute(query)
+
+        users = result.fetchall()
+
+        connection.close()
+
+        return users
+
+
     def validate_user_login(self, username, password):
         query = sa.select(self.users).where(
             sa.and_(self.users.c.username == username, self.users.c.password == password)
         )
 
         connection = self.engine.connect()
+
 
         result = connection.execute(query)
 

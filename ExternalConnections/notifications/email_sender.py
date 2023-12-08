@@ -2,36 +2,38 @@ import os
 from email.message import EmailMessage
 import ssl
 import smtplib
-from userclass import WeatherForecastUser 
+import sys
 
+current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+absolute_directory = os.path.dirname(parent_directory)
+sys.path.append(absolute_directory) 
+
+from Entities.User import User
+from Services.DataPlot.DataHandler import DataHandler
+from ExternalConnections.database.DatabaseConnection import DatabaseConnection
+from tests.create_mock_users import create_mock_users
 
 # Constants to send email
 EMAIL_SENDER = 'weatherforecastunicamp@gmail.com'
 PASSWORD = "qvko zxsn zaqy fjyu"
 EMAIL_TO_FIND = 'viniciusseidel2@gmail.com'
 
-# Risk level in the dictionary
-RISCO = {
-    0: 'BAIXO',
-    1: 'MÉDIO',
-    2: 'ALTO'
-}
+db = create_mock_users()
 
-def verify_data_email(csv_file_path = 'user_data_sample.csv', email_to_find=EMAIL_TO_FIND):
-    # Get user data from the class WeatherForecastUser
-    if os.path.exists(csv_file_path):
-        if csv_file_path.endswith('.csv'):
-            user = WeatherForecastUser(csv_file_path=csv_file_path, email=email_to_find)
+# Using the DatabaseCOnnection get all users
+users = db.user_list
 
-        else:
-            raise TypeError('The file must be a csv file.')
-    
-    else:
-        raise FileNotFoundError('The file does not exist.')
-    
-    return user, 1
+for user in users:
+    print(user.Email)
+    print(user.Name)
+    print(user.Password)
+    print(user.City)
+    print(user.ReceiveNotifications)
+    print("\n")
 
-def send_email(user: WeatherForecastUser):
+
+def send_email(user: User):
     """Given an valid WeatherForecast user this function sends an email to the user with the weather forecast."""
     
     # Email subject and body
@@ -43,19 +45,23 @@ def send_email(user: WeatherForecastUser):
     Para mais informações, acesse o site do Weather Forecast Unicamp em https://weather-forecast-unicamp.herokuapp.com/ \n
     """
 
-    # Check if the user wants to receive emails and if the email exists in the user database
-    if user.get_user_receive_email() == True and user.get_user_email() is not None:
+    # Check if the user wants to receive emails
+    if user.ReceiveNotifications() == True:
 
         # Format the subject and body of the email
+
+        alert_dict = DataHandler.get_alerts(user.City())
+        
+        
         subject = subject.format(RISCO_ATUAL=RISCO[user.get_user_risk()])
         
-        body = body.format(NOME=user.get_user_name(), 
+        body = body.format(NOME=user.Name, 
                             RISCO_ATUAL=RISCO[user.get_user_risk()], 
-                            CIDADE=user.get_user_city())
+                            CIDADE=user.City())
 
         em = EmailMessage()
         em['From'] = EMAIL_SENDER
-        em['To'] = user.get_user_email()
+        em['To'] = user.Email()
         em['Subject'] = subject
         em.set_content(body)
 
@@ -64,7 +70,7 @@ def send_email(user: WeatherForecastUser):
 
         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
             smtp.login(EMAIL_SENDER, PASSWORD)
-            smtp.sendmail(EMAIL_SENDER, user.get_user_email(), em.as_string())
+            smtp.sendmail(EMAIL_SENDER, user.Email(), em.as_string())
 
         return 1
 
