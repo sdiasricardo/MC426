@@ -11,18 +11,26 @@ sys.path.append(absolute_directory)
 
 from Entities.User import User
 from Services.DataPlot.DataHandler import DataHandler
+from ExternalConnections.database.DatabaseConnection import DatabaseConnection
+from tests.create_mock_users import create_mock_users
 
 # Constants to send email
 EMAIL_SENDER = 'weatherforecastunicamp@gmail.com'
 PASSWORD = "qvko zxsn zaqy fjyu"
 EMAIL_TO_FIND = 'viniciusseidel2@gmail.com'
 
-# Risk level in the dictionary
-RISCO = {
-    0: 'BAIXO',
-    1: 'MÉDIO',
-    2: 'ALTO'
-}
+db = create_mock_users()
+
+# Using the DatabaseCOnnection get all users
+users = db.user_list
+
+for user in users:
+    print(user.Email)
+    print(user.Name)
+    print(user.Password)
+    print(user.City)
+    print(user.ReceiveNotifications)
+    print("\n")
 
 
 def send_email(user: User):
