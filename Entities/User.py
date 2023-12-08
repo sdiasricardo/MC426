@@ -5,6 +5,7 @@ class User:
         self.Password = password
         self.City = city
         self.ReceiveNotifications = receive_notifications
+        self.NotificationsCache = dict()
 
     def is_same_user(self, user):
 

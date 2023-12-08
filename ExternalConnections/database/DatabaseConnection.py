@@ -74,17 +74,7 @@ class DatabaseConnection:
 
 
     def get_all_users(self):
-        query = sa.select(self.users)
-
-        connection = self.engine.connect()
-
-        result = connection.execute(query)
-
-        users = result.fetchall()
-
-        connection.close()
-
-        return users
+        return self.user_list
 
 
     def validate_user_login(self, username, password):

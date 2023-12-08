@@ -39,7 +39,7 @@ def create_mock_users():
 
     user1 = User("Galo", "email1", "senha1", "Campinas", True)
     user2 = User("Saia", "email2", "senha2", "Manaus", True)
-    user3 = User("Lofi", "email3", "senha3", "", True)
+    user3 = User("Lofi", "email3", "senha3", "Fortaleza", True)
 
     db.create_user(user1)
     db.create_user(user2)
