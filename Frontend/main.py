@@ -87,6 +87,29 @@ def home():
     return redirect(url_for('login'))
 
 
+@app.route('/addCity', methods=['POST'])
+def addCity():
+    city = request.form['city']
+    heat = 'heat' in request.form['heat']
+    rain = 'rain' in request.form['rain']
+    wind = 'wind' in request.form['wind']
+
+    
+    return redirect(url_for('signup_success'))
+
+
+@app.route('/removeCity', methods=['POST'])
+def removeCity():
+    city = request.form['city']
+    remove = 'remove' in request.form['remove']
+    notifications = 'notifications' in request.form['notifications']
+
+    
+    return redirect(url_for('signup_success'))
+
+
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return redirect(url_for('index'))
