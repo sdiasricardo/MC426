@@ -9,7 +9,7 @@ absolute_directory = os.path.dirname(parent_directory)
 sys.path.append(absolute_directory) 
 sys.path.append(parent_directory + "/Entities/")
 
-
+from ExternalConnections.api.geolocator import Geolocator
 from Entities.User import User
 from Entities.Enums.user_signup_situation import user_signup_situation
 
@@ -24,9 +24,9 @@ class DatabaseConnection:
             sa.Column('username', sa.String(50)),
             sa.Column('email', sa.String(100)),
             sa.Column('password', sa.String(100)),
-            sa.Column('city', sa.String(100)),
+            sa.Column('city', sa.PickleType()),
             sa.Column('receive_notifications', sa.Boolean(100)),
-            sa.Column('notification_cache'), sa.Dict()
+            sa.Column('notification_cache', sa.PickleType())
         )
         self.metadata.create_all(self.engine)
 
@@ -55,10 +55,13 @@ class DatabaseConnection:
         return user_signup_situation.SUCCESS
 
     def create_user(self, user):
+        currCity = Geolocator.get_location_by_coordinates(Geolocator.get_current_location())
+        listCities = [currCity]
 
         insert = sa.insert(self.users).values(username=user.Name, 
                                             email=user.Email, 
-                                            password=user.Password, 
+                                            password=user.Password,
+                                            city=listCities,
                                             receive_notifications= user.ReceiveNotifications)
 
         connection = self.engine.connect()

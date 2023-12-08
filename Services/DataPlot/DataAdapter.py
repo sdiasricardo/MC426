@@ -14,7 +14,7 @@ class DataAdapter:
     def __init__(self) -> None:
         self.apihandler = ApiHandler()
         self.filehandler = FileHandler()
-
+    
     def _search_cache(self, target_file_name):
         target = f"{target_file_name}.json"
         for root, dirs, files in os.walk(current_directory + '/DataCache/'):
