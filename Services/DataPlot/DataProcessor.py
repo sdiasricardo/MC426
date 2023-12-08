@@ -1,10 +1,14 @@
-import pandas as pd
-from DataAdapter import DataAdapter
 import os, sys, shutil
-from datetime import datetime, timedelta
+import pandas as pd
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
+parent_directory = os.path.dirname(current_directory)
+absolute_directory = os.path.dirname(parent_directory)
+sys.path.append(absolute_directory)
+sys.path.append(absolute_directory + "/Services/DataPlot/")
 
+from DataAdapter import DataAdapter
+from datetime import datetime, timedelta
 
 class DataProcessor:
     def __init__(self):

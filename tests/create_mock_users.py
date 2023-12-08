@@ -37,9 +37,9 @@ def create_mock_users():
 
     db = DatabaseConnectionMock()
 
-    user1 = User("nome1", "email1", "senha1", "", True)
-    user2 = User("nome2", "email2", "senha2", "", True)
-    user3 = User("nome3", "email3", "senha3", "", True)
+    user1 = User("Galo", "email1", "senha1", "Campinas", True)
+    user2 = User("Saia", "email2", "senha2", "Manaus", True)
+    user3 = User("Lofi", "email3", "senha3", "", True)
 
     db.create_user(user1)
     db.create_user(user2)

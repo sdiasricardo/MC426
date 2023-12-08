@@ -10,7 +10,7 @@ absolute_directory = os.path.dirname(parent_directory)
 sys.path.append(absolute_directory) 
 
 from Entities.User import User
-from Services.DataPlot.DataHandler import DataHandler
+from Services.DataPlot.DataProcessor import DataProcessor
 from ExternalConnections.database.DatabaseConnection import DatabaseConnection
 from tests.create_mock_users import create_mock_users
 
@@ -24,17 +24,10 @@ db = create_mock_users()
 # Using the DatabaseCOnnection get all users
 users = db.user_list
 
-for user in users:
-    print(user.Email)
-    print(user.Name)
-    print(user.Password)
-    print(user.City)
-    print(user.ReceiveNotifications)
-    print("\n")
-
-
-def send_email(user: User):
+def send_email(user):
     """Given an valid WeatherForecast user this function sends an email to the user with the weather forecast."""
+
+    print("Sending email to user: ", user.Name)
     
     # Email subject and body
     subject = '[ATENÇÃO] Risco de chuva {RISCO_ATUAL} em sua região'
@@ -46,18 +39,19 @@ def send_email(user: User):
     """
 
     # Check if the user wants to receive emails
-    if user.ReceiveNotifications() == True:
+    if user.ReceiveNotifications == True:
 
         # Format the subject and body of the email
-
-        alert_dict = DataHandler.get_alerts(user.City())
         
+        processor = DataProcessor()
+        alert_dict = processor.get_alerts(user.City)
+        print(alert_dict)
         
-        subject = subject.format(RISCO_ATUAL=RISCO[user.get_user_risk()])
+        # subject = subject.format(RISCO_ATUAL=RISCO[user.get_user_risk()])
         
-        body = body.format(NOME=user.Name, 
-                            RISCO_ATUAL=RISCO[user.get_user_risk()], 
-                            CIDADE=user.City())
+        # body = body.format(NOME=user.Name, 
+        #                     RISCO_ATUAL=RISCO[user.get_user_risk()], 
+        #                     CIDADE=user.City())
 
         em = EmailMessage()
         em['From'] = EMAIL_SENDER
@@ -76,3 +70,5 @@ def send_email(user: User):
 
     else:
         return -1
+    
+send_email(users[0])
