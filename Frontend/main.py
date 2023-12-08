@@ -23,7 +23,7 @@ from DataPlotter import DataPlotter as data_plotter
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())  # temporary for testing purposes
+user_service = UserService(DatabaseConnection())
 data_plotter = data_plotter()
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
@@ -106,6 +106,11 @@ def login():
 
     return render_template('login.html')
 
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
 
 @app.route('/home')
 def home():

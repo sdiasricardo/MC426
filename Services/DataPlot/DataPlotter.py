@@ -38,11 +38,11 @@ class DataPlotter:
         df = self._get_day_temperatures()
         match selected_plot_type:
             case "histogram":
-                fig = px.histogram(df, x='Datetime', y=selected_column, title=f'Plot of {selected_column}')
+                fig = px.histogram(df, x='Datetime', y=selected_column)
             case "scatter":
-                fig = px.scatter(df, x='Datetime', y=df[selected_column], title=f'Plot of {selected_column}')
+                fig = px.scatter(df, x='Datetime', y=df[selected_column])
             case "line":
-                fig = px.line(df, x='Datetime', y=df[selected_column], title=f'plot type {selected_plot_type}')
+                fig = px.line(df, x='Datetime', y=df[selected_column])
             case _:
                 raise Exception("Invalid selected_plot_type")
         return fig

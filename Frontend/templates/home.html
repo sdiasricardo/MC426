@@ -21,6 +21,20 @@
             margin: 0;
         }
 
+        .top-bar {
+            background-color: #2DD5D5;
+            color: white;
+            padding: 2.5%; /* Adjust the padding to 0 on the right and left */
+            text-align: center;
+            position: fixed;
+            width: calc(100% - 60px); /* Set width to 100% minus the width of the sidebar */
+            height: 10%;
+            z-index: 1000;
+            transition: margin-left 0.3s ease;
+            margin-left: 60px;
+            padding-left: 0px;
+        }
+
         .sidebar {
             width: 60px;
             height: 100vh;
@@ -38,6 +52,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 50px;
         }
 
         .weather-container {
@@ -47,6 +62,10 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
             height: 80vh;
+            width: 95%;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
@@ -77,6 +96,7 @@
         .sidebar-minimized .sidebar-item,
         .sidebar-minimized h2 {
             opacity: 0;
+
         }
 
         .sidebar h2 {
@@ -91,14 +111,26 @@
             width: 100%; /* Set the width of the iframe to 100% of the container */
             height: 85%; /* Set the desired height of the iframe */
         }
+
+        .bars {
+            display: flex;
+            flex-direction: row;
+        }
+
     </style>
 </head>
 <body>
-    <div class="sidebar" id="sidebar">
-        <h2>Weather App</h2>
-        <a class="sidebar-item" href="#profile"><i class="fas fa-user"></i></a>
-        <a class="sidebar-item" href="{{ url_for('login') }}"><i class="fas fa-sign-out-alt"></i></a>
-        <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
+
+    <div class="bars">
+        <div class="sidebar" id="sidebar">
+            <h2>Weather App</h2>
+            <a class="sidebar-item" href="#profile"><i class="fas fa-user" id="profile"></i></a>
+            <a class="sidebar-item" href="{{ url_for('logout') }}" id="logout"><i class="fas fa-sign-out-alt"></i></a>
+            <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="top-bar" id="top-bar">
+            <h2>Weather App</h2>
+        </div>
     </div>
 
     <div class="content">
@@ -113,11 +145,32 @@
     <script>
         // Set initial state to minimized
         const sidebar = document.getElementById('sidebar');
+        const topbar = document.getElementById('top-bar');
         sidebar.style.width = '60px';  // Ensure initial width is set
         sidebar.classList.add('sidebar-minimized');
 
         function toggleSidebar() {
+            const profileLink = document.getElementById('profile');
+            const logoutLink = document.getElementById('logout');
+
             sidebar.classList.toggle('sidebar-minimized');
+
+            if (sidebar.classList.contains('sidebar-minimized')) {
+                // Guarda os hrefs antes de remover
+                profileLink.setAttribute('data-href', profileLink.getAttribute('href'));
+                logoutLink.setAttribute('data-href', logoutLink.getAttribute('href'));
+
+                // Remove o href
+                profileLink.removeAttribute('href');
+                logoutLink.removeAttribute('href');
+            } else {
+                // Restaura os hrefs
+                profileLink.setAttribute('href', profileLink.getAttribute('data-href'));
+                logoutLink.setAttribute('href', logoutLink.getAttribute('data-href'));
+            }
+
+            // Ajusta a largura da topbar e da sidebar
+            topbar.style.marginLeft = sidebar.style.width === '60px' ? '250px' : '60px';
             sidebar.style.width = sidebar.style.width === '60px' ? '250px' : '60px';
         }
     </script>
