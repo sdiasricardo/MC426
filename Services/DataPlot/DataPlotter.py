@@ -12,13 +12,13 @@ sys.path.append(absolute_directory)
 sys.path.append(absolute_directory + "/ExternalConnections/api")
 
 from ExternalConnections.api.apiHandler import ApiHandler
+from DataHandler import DataHandler as DataHandler
 from DataAdapter import DataAdapter
 from DataProcessor import DataProcessor
-import DataHandler
+
 
 class DataPlotter:
     def __init__(self):
-        self.df = None
         self.dataProcessor = DataProcessor()
         
     def _set_df(self, query: str, day: str, info: str) -> dict | None:

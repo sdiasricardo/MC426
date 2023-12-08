@@ -19,6 +19,7 @@ class UserService:
         situation = self.Connection.validate_user_signup(user.Name, user.Email)
 
         if situation is not user_signup_situation.SUCCESS:
+
             return situation
 
         self.Connection.create_user(user)
