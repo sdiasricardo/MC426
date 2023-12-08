@@ -13,6 +13,7 @@ from Entities.User import User
 from Services.DataPlot.DataProcessor import DataProcessor
 from ExternalConnections.database.DatabaseConnection import DatabaseConnection
 from tests.create_mock_users import create_mock_users
+
 # Constants to send email
 EMAIL_SENDER = 'weatherforecastunicamp@gmail.com'
 PASSWORD = "qvko zxsn zaqy fjyu"

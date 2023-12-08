@@ -13,8 +13,6 @@ sys.path.append(parent_directory + "/Entities/")
 from Entities.User import User
 from Entities.Enums.user_signup_situation import user_signup_situation
 
-
-
 class DatabaseConnection:
     def __init__(self):
         self.engine = sa.create_engine("mysql://root:12345678@localhost/eng_software_teste")
@@ -28,6 +26,7 @@ class DatabaseConnection:
             sa.Column('password', sa.String(100)),
             sa.Column('city', sa.String(100)),
             sa.Column('receive_notifications', sa.Boolean(100)),
+            sa.Column('notification_cache'), sa.Dict()
         )
         self.metadata.create_all(self.engine)
 
@@ -57,7 +56,10 @@ class DatabaseConnection:
 
     def create_user(self, user):
 
-        insert = sa.insert(self.users).values(username=user.Name, email=user.Email, password=user.Password, receive_notifications= user.ReceiveNotifications)
+        insert = sa.insert(self.users).values(username=user.Name, 
+                                            email=user.Email, 
+                                            password=user.Password, 
+                                            receive_notifications= user.ReceiveNotifications)
 
         connection = self.engine.connect()
 

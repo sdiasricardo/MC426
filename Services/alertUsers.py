@@ -9,15 +9,22 @@ import os, sys
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
-absolute_directory = os.path.dirname(parent_directory)
-sys.path.append(absolute_directory)
+sys.path.append(parent_directory)
 
+from ExternalConnections.database.DatabaseConnection import DatabaseConnection
 from tests.create_mock_users import create_mock_users
-from ExternalConnections.database import DatabaseConnection
-
 
 db = create_mock_users()
 users = DatabaseConnection.get_all_users(db)
 
 def check_notification():
+    for user in users:
+        print(user.Name)
+        print(user.Email)
+        print(user.City)
+        print(user.ReceiveNotifications)
+        print("")
+
+if __name__ == "__main__":
+    check_notification()
     
