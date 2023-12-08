@@ -14,3 +14,6 @@ class Geolocator:
             return tuple([latitude, longitude])
         else:
             print('Unable to retrieve location information.')
+
+geoloc = Geolocator()
+print(geoloc.get_current_location())
