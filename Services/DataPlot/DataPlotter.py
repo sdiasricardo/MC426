@@ -19,7 +19,6 @@ from DataProcessor import DataProcessor
 
 class DataPlotter:
     def __init__(self):
-        self.df = json.load(open('../Services/DataPlot/data.json'))
         self.dataProcessor = DataProcessor()
         
     def _set_df(self, query: str, day: str, info: str) -> dict | None:
