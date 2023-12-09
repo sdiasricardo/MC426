@@ -21,18 +21,71 @@
             margin: 0;
         }
 
+        .dropbtn {
+              background-color: #4CAF50; /* Green background color */
+              color: white; /* White text color */
+              padding: 10px 20px; /* Padding for better appearance */
+              font-size: 16px; /* Font size */
+              border: none; /* Remove border */
+              border-radius: 5px; /* Add border-radius for rounded corners */
+              cursor: pointer; /* Add cursor pointer on hover */
+              margin-top: 10%;
+        }
+
+        .dropbtn:hover {
+              background-color: #45a049; /* Darker green color on hover */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #00;
+            padding: 10px;
+            margin-left: 0;
+        }
+
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .navbar .dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            max-height: 200px; /* Set a maximum height for the dropdown */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navbar .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .navbar .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
         .top-bar {
             background-color: #2DD5D5;
             color: white;
-            padding: 2.5%; /* Adjust the padding to 0 on the right and left */
-            text-align: center;
+            padding: 3.5%; /* Adjust the padding to 0 on the right and left */
+            text-align: left;
             position: fixed;
             width: calc(100% - 60px); /* Set width to 100% minus the width of the sidebar */
             height: 10%;
             z-index: 1000;
             transition: margin-left 0.3s ease;
             margin-left: 60px;
-            padding-left: 0px;
         }
 
         .sidebar {
@@ -50,9 +103,10 @@
             flex: 1;
             padding: 20px;
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             margin-top: 50px;
+            flex-direction: column;
         }
 
         .weather-container {
@@ -62,7 +116,7 @@
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
             height: 80vh;
-            width: 95%;
+            width: 100%;
             justify-content: center;
             display: flex;
             flex-direction: column;
@@ -129,14 +183,25 @@
             <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="top-bar" id="top-bar">
-            <h2>Weather App</h2>
+            <h2>{{City}}, {{Temperature}}º</h2>
         </div>
     </div>
 
+
+
+
     <div class="content">
+        <div class="navbar">
+            <div class="dropdown">
+                <button class="dropbtn">Select Option</button>
+                <div class="dropdown-content">
+                    <a href="#">Option 1</a>
+                    <a href="#">Option 2</a>
+                    <a href="#">Option 3</a>
+                </div>
+            </div>
+        </div>
         <div class="weather-container">
-            <h1>Welcome to the Weather App!</h1>
-            <p class="weather-info">Current Weather: Sunny, 25°C</p>
                 <iframe src="{{dash_url}}"></iframe>
         </div>
     </div>

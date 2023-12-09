@@ -57,7 +57,7 @@ class DatabaseConnection:
 
     def create_user(self, user):
 
-        insert = sa.insert(self.users).values(username=user.Name, email=user.Email, password=user.Password, receive_notifications= user.ReceiveNotifications)
+        insert = sa.insert(self.users).values(username=user.Name, email=user.Email, password=user.Password, receive_notifications=user.ReceiveNotifications)
 
         connection = self.engine.connect()
 
