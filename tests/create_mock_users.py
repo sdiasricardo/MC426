@@ -10,7 +10,7 @@ sys.path.append(parent_directory)
 from Entities.User import User
 from Services.DataPlot.DataHandler import DataHandler
 from ExternalConnections.database.DatabaseConnection import DatabaseConnection
-from Entities.Enums.user_signup_situation import user_signup_situation
+from Entities.Enums.UserSignupSituation import UserSignupSituation
 
 # This file creates mock users to be used in the tests
 
@@ -23,27 +23,26 @@ class DatabaseConnectionMock:
 
         for user in self.user_list:
             if user.Email == email:
-                return user_signup_situation.EMAIL_TAKEN
+                return UserSignupSituation.EMAIL_TAKEN
 
             elif user.Name == name:
-                return user_signup_situation.USERNAME_TAKEN
+                return UserSignupSituation.USERNAME_TAKEN
 
-        return user_signup_situation.SUCCESS
+        return UserSignupSituation.SUCCESS
 
     def create_user(self, user):
         self.user_list.append(user)
+
+    def get_user_list(self):
+        return self.user_list
 
 
 def create_mock_users():
 
     db = DatabaseConnectionMock()
 
-    user1 = User("Galo", "email1", "senha1", "Campinas", True)
-    user2 = User("Saia", "email2", "senha2", "Manaus", True)
-    user3 = User("Lofi", "email3", "senha3", "Fortaleza", True)
+    user1 = User("id", "Galo", "fernandomarqs12@gmail.com", "senha1", True)
+
 
     db.create_user(user1)
-    db.create_user(user2)
-    db.create_user(user3)
-
     return db
