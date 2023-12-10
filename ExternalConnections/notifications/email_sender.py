@@ -22,7 +22,9 @@ EMAIL_TO_FIND = 'viniciusseidel2@gmail.com'
 db = create_mock_users()
 
 # Using the DatabaseCOnnection get all users
-users = db.user_list
+users = DatabaseConnection.get_all_users(db)
+
+print(users[0].City)
 
 def send_email(user):
     """Given an valid WeatherForecast user this function sends an email to the user with the weather forecast."""
@@ -70,5 +72,4 @@ def send_email(user):
 
     else:
         return -1
-    
-send_email(users[0])
+

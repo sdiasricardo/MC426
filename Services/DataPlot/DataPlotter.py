@@ -49,5 +49,5 @@ class DataPlotter:
 
 if __name__ == '__main__':
     plotter = DataPlotter()
-    plotter.create_plot('Paris', 'rain', '2023-12-12').show()
+    plotter.create_plot('Berlin', 'rain', '2023-12-12').show()
 

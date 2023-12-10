@@ -7,6 +7,8 @@ class User:
         self.Password = password
         self.Cities = []
         self.ReceiveNotifications = receive_notifications
+        self.NotificationsCache = list()
+
 
     def is_same_user(self, user):
 
