@@ -1,9 +1,11 @@
 class User:
-    def __init__(self, name, email, password, city, receive_notifications):
+
+    def __init__(self, id=None, name=None, email=None, password=None, receive_notifications=False):
+        self.Id = id
         self.Name = name
         self.Email = email
         self.Password = password
-        self.City = city
+        self.Cities = []
         self.ReceiveNotifications = receive_notifications
 
     def is_same_user(self, user):
