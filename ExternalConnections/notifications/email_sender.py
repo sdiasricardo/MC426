@@ -32,14 +32,13 @@ class EmailSender:
         body = """ 
         Dear {NAME},
 
-        Be advised that a {SEVERITY} weather condition has been reported at: {AREAS}\n\n
+        Be advised that a {SEVERITY} weather condition has been reported at: {AREAS}
 
-        Certainty:\n
-            {CERTAINTY}
-        Recommended Actions:\n
-        {INSTRUCTIONS}
-        Kind regards,\n
-        Weather426 Team\n
+        Certainty: {CERTAINTY}\n
+        Recommended Actions:
+        {INSTRUCTIONS}\n
+        Kind regards,
+        Weather426 Team
 
         Note: You are receiving this email because you have subscribed to weather alerts on our app. If this message has reached you in error, please disregard it, and we apologize for any inconvenience caused.
         """
@@ -51,12 +50,13 @@ class EmailSender:
             
             subject = subject.format(NOTE = alert['note'])
             
+            INSTRUCTIONS = alert['instruction'].replace('\n', ' ')
             body = body.format(NAME=user.Name,
                                AREAS = alert['areas'],
                                 SEVERITY= alert['severity'], 
                                 CERTAINTY= alert['certainty'],
                                 DESC = alert['desc'],
-                                INSTRUCTIONS = alert['instruction'])
+                                INSTRUCTIONS = INSTRUCTIONS)
             
             em = EmailMessage()
             em['From'] = EMAIL_SENDER
