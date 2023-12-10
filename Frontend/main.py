@@ -116,7 +116,11 @@ def logout():
 def home():
     if 'username' in session:
         username = session['username']
-        return render_template('home.html', username=username, dash_url='http://127.0.0.1:5000/dash/')
+        return render_template('home.html',
+                               username=username,
+                               dash_url='http://127.0.0.1:5000/dash/',
+                               city="Campinas",
+                               temperature=20)
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))

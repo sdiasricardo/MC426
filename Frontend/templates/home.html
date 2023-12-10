@@ -78,14 +78,15 @@
         .top-bar {
             background-color: #2DD5D5;
             color: white;
-            padding: 3.5%; /* Adjust the padding to 0 on the right and left */
+            padding: 15px; /* Adjust the padding to 0 on the right and left */
             text-align: left;
             position: fixed;
             width: calc(100% - 60px); /* Set width to 100% minus the width of the sidebar */
-            height: 10%;
+            height: 12%;
             z-index: 1000;
             transition: margin-left 0.3s ease;
             margin-left: 60px;
+            overflow: hidden;
         }
 
         .sidebar {
@@ -183,7 +184,8 @@
             <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="top-bar" id="top-bar">
-            <h2>{{City}}, {{Temperature}}º</h2>
+            <h2>{{city}}, {{temperature}}º</h2>
+            <i class="fas fa-sun" style="color: #f39c12; font-size: 1.5em;"></i>
         </div>
     </div>
 
