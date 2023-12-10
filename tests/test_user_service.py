@@ -9,7 +9,7 @@ sys.path.append(parent_directory + "/Services")
 #sys.path.append(parent_directory + "/Frontend" + "/Models")
 from User import User
 from UserService import UserService
-from Enums.user_signup_situation import user_signup_situation
+from Enums.UserSignupSituation import UserSignupSituation
 
 
 class UserServiceTest(unittest.TestCase):
@@ -23,7 +23,7 @@ class UserServiceTest(unittest.TestCase):
         response1 = self.user_service.register(user1)
         response2 = self.user_service.register(user2)
 
-        self.assertEqual(user_signup_situation.USERNAME_TAKEN, response2)
+        self.assertEqual(UserSignupSituation.USERNAME_TAKEN.value, response2.value)
 
     def test_register_duplicate_email(self):
         user1 = User("nome1", "email1", "senha1", "", True)
@@ -32,14 +32,14 @@ class UserServiceTest(unittest.TestCase):
         response1 = self.user_service.register(user1)
         response2 = self.user_service.register(user2)
 
-        self.assertEqual(user_signup_situation.EMAIL_TAKEN, response2)
+        self.assertEqual(UserSignupSituation.EMAIL_TAKEN.value, response2.value)
 
     def test_register_valid_user(self):
         user = User("nome1", "email1", "senha1", "", True)
 
         response = self.user_service.register(user)
 
-        self.assertEqual(user_signup_situation.SUCCESS, response)
+        self.assertEqual(UserSignupSituation.SUCCESS.value, response.value)
 
     def test_login_wrong_password(self):
         user = User("nome1", "email1", "senha1", "", True)
@@ -82,13 +82,13 @@ class DatabaseConnectionMock:
 
             if user.Name == username:
 
-                return user_signup_situation.USERNAME_TAKEN
+                return UserSignupSituation.USERNAME_TAKEN
 
             if user.Email == email:
 
-                return user_signup_situation.EMAIL_TAKEN
+                return UserSignupSituation.EMAIL_TAKEN
 
-        return user_signup_situation.SUCCESS
+        return UserSignupSituation.SUCCESS
 
     def validate_user_login(self, username, password):
 
