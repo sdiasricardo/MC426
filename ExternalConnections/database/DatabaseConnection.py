@@ -158,16 +158,19 @@ class DatabaseConnection:
             user.Cities.append(user_db[7])
 
         return user
+    
+    def execute_query(self, query):
+        connection = self.engine.connect()
+        connection.execute(query)
+        connection.commit()
+        connection.close()
 
     def add_city_to_user(self, username, city):
         user = self.get_user_by_name(username)
 
         if city not in user.Cities:
             insert = sa.insert(self.cities).values(user_id=user.Id, city=city)
-            connection = self.engine.connect()
-            connection.execute(insert)
-            connection.commit()
-            connection.close()
+            self.execute_query(insert)
             return
 
         raise Exception("Cidade já cadastrada")
@@ -178,26 +181,17 @@ class DatabaseConnection:
         if city in user.Cities:
             remove = sa.delete(self.cities)\
                 .where(sa.and_(self.cities.c.city == city, self.cities.c.user_id == user.Id))
-
-            connection = self.engine.connect()
-            connection.execute(remove)
-            connection.commit()
-            connection.close()
+            self.execute_query(remove)
             return
 
         raise Exception("Usuário não possui essa cidade")
 
     def update_user_receive_notifications(self, username, receive_notifications):
-        user = self.get_user_by_name(username)
-
         update = sa.update(self.users)\
             .where(self.users.c.username == username)\
             .values(receive_notifications=receive_notifications)
 
-        connection = self.engine.connect()
-        connection.execute(update)
-        connection.commit()
-        connection.close()
+        self.execute_query(update)
 
 
 if __name__ == '__main__':
