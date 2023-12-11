@@ -14,7 +14,6 @@ from Entities.User import User
 from Entities.Enums.UserSignupSituation import UserSignupSituation
 
 
-
 class DatabaseConnection:
     def __init__(self):
         self.engine = sa.create_engine("mysql://root:12345678@localhost/eng_software_teste")
@@ -59,7 +58,6 @@ class DatabaseConnection:
 
             return UserSignupSituation.USERNAME_TAKEN
 
-
         return UserSignupSituation.SUCCESS
 
     def create_user(self, user):
@@ -78,7 +76,6 @@ class DatabaseConnection:
             print(f"Error inserting user: {e}")
 
         connection.close()
-
 
     def get_all_users(self):
         # query = sa.select(self.users)
@@ -129,7 +126,6 @@ class DatabaseConnection:
         return users_list
 
 
-
     def validate_user_login(self, username, password):
         query = sa.select(self.users).where(
             sa.and_(self.users.c.username == username, self.users.c.password == password)
@@ -166,7 +162,6 @@ class DatabaseConnection:
 
         return user
 
-
     def add_city_to_user(self, username, city):
         user = self.get_user_by_name(username)
 
@@ -194,8 +189,6 @@ class DatabaseConnection:
             return
 
         raise Exception("Usuário não possui essa cidade")
-
-
 
 
 if __name__ == '__main__':
