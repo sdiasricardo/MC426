@@ -77,8 +77,31 @@
 
             <div class="weather-container">
 
+              
+                <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%;" id="notifications">
+                  <form action="/changeNotification" method="POST">
+                      <div class="row mb-3">
+                          <label class="col-sm-2 col-form-label"><h2>Notifications:</h2></label>
             
-            <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%;" id="notifications">
+                      </div>
+                      <fieldset class="row mb-3">
+                        <legend class="col-form-label col-sm-2 pt-0">Notifications</legend>
+                        <div class="col-sm-10">
+                          <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch" id="notification" name="notification" checked>
+                            <label class="form-check-label" for="flexSwitchCheckChecked">Disable/Enable</label>
+                          </div>
+                          
+                        </div>
+                      </fieldset>
+                      <button type="submit" class="btn btn-primary">Change</button>
+                    </form>
+                </div>
+
+
+
+            
+            <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
                 <form action="/addCity" method="POST">
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label"><h2>Add a city:</h2></label>
@@ -89,33 +112,13 @@
                         <input type="text" class="form-control" id="city" name="city" placeholder="Type the city you want to add">
                       </div>
                     </div>
-                    
-                    <fieldset class="row mb-3">
-                      <legend class="col-form-label col-sm-2 pt-0">Notifications</legend>
-                      <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="heat" name="heat" >
-                            <label class="form-check-label" for="flexCheckDefault">
-                              Heat Waves
-                            </label>
-                          </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="rain" name="rain" >
-                            <label class="form-check-label" for="flexCheckDefault">
-                              Heavy Rains
-                            </label>
-                          </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="wind" name="wind" >
-                            <label class="form-check-label" for="flexCheckDefault">
-                              High Winds
-                            </label>
-                          </div>
-                      </div>
-                    </fieldset>
+
                     <button type="submit" class="btn btn-primary">Add</button>
                   </form>
             </div>
+
+
+
 
             <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
                 <form action="/removeCity" method="POST">
@@ -125,27 +128,17 @@
                     <div class="row mb-3">
                       <label for="inputEmail3" class="col-sm-2 col-form-label">City</label>
                       <div class="col-sm-10">
-                        <input type="email" class="form-control" id="city" name="city" placeholder="Type the city you want to remove">
+                        <select id="inputState" class="form-select">
+                          <option selected>Choose...</option>
+                          <option>Campinas</option>
+                          <option>Rio de Janeiro</option>
+                          <option>...</option>
+                          <option>...</option>
+                        </select>
                       </div>
                     </div>
                     
-                    <fieldset class="row mb-3">
-                      <legend class="col-form-label col-sm-2 pt-0">Type of removal</legend>
-                      <div class="col-sm-10">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="remove" name="remove" value="option1" checked>
-                            <label class="form-check-label" for="exampleRadios1">
-                              Remove city
-                            </label>
-                          </div>
-                          <div class="form-check">
-                            <input class="form-check-input" type="radio" name="exampleRadios" id="notification" name="notification" value="option2">
-                            <label class="form-check-label" for="exampleRadios2">
-                              Disable notifications
-                            </label>
-                          </div>
-                      </div>
-                    </fieldset>
+                    
                     <button type="submit" class="btn btn-primary">Remove</button>
                   </form>
             </div>
