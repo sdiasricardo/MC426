@@ -36,12 +36,10 @@ class DataPlotter:
         return fig
 
     def create_plot(self, query: str, info: str, day: str):
-        self._set_df(query, day, info)
         match info:
             case 'temp':
                 return self.plot_day_temp(query, day)
             case 'rain':
-                print(self.df)
                 return self.plot_day_rain(query, day)
             case _:
                 raise Exception('Invalid Info')
