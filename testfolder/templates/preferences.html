@@ -69,15 +69,6 @@
 
     </head>
     <body>
-      <script type="text/javascript">
-        window.onload = function() {
-            // Check if there is a message to display
-            {% if message %}
-                alert("{{ message }}");
-            {% endif %}
-        };
-    </script>
-
       <!-- As a heading -->
         <div class="vstack gap-3">
             <div class="container-fluid text-center" id="title">
@@ -103,7 +94,7 @@
                           
                         </div>
                       </fieldset>
-                      <button type="submit" class="btn btn-outline-primary">Change</button>
+                      <button type="submit" class="btn btn-primary">Change</button>
                     </form>
                 </div>
 
@@ -122,7 +113,7 @@
                       </div>
                     </div>
 
-                    <button type="submit" class="btn btn-outline-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                   </form>
             </div>
 
@@ -137,8 +128,13 @@
                     <div class="row mb-3">
                       <label for="inputEmail3" class="col-sm-2 col-form-label">City</label>
                       <div class="col-sm-10">
-                        <select id="inputState" class="form-select">
-                          {% for item in cities_list %}
+                        <select id="inputState" name="inputState" class="form-select">
+                          <!-- <option selected>Choose...</option>
+                          <option>Campinas</option>
+                          <option>Rio de Janeiro</option>
+                          <option>...</option>
+                          <option>...</option> -->
+                          {% for item in dropdown_list %}
                             <option value="{{ item }}">{{ item }}</option>
                           {% endfor %}
                         </select>
@@ -146,17 +142,9 @@
                     </div>
                     
                     
-                    <button type="submit" class="btn btn-outline-primary">Remove</button>
+                    <button type="submit" class="btn btn-primary">Remove</button>
                   </form>
             </div>
-
-
-            <div class="container text-center" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="return">
-              <form action="/redirectHome" method="POST">
-                <button type="submit" class="sidebar-item btn btn-primary btn-">Return Home</button>
-            </form>
-          </div>
-            
         </div>
             
 

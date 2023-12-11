@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dropdown Example</title>
+</head>
+<body>
+
+    <script type="text/javascript">
+        window.onload = function() {
+            // Check if there is a message to display
+            {% if message %}
+                alert("{{ message }}");
+            {% endif %}
+        };
+    </script>
+
+    <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
+    <form action="/redirectPreferences" method="POST">
+        <button type="submit" class="btn btn-primary">Remove</button>
+      </form>
+</div>
+</div>
+
+
+
+</body>
+</html>

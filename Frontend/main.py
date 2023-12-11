@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sys
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -11,12 +11,15 @@ from User import User
 from UserService import UserService
 from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
-from DataPlotter import DataPlotter as data_plotter
+from Services.DataPlot.DataPlotter import DataPlotter
+from Services.DataPlot.DataAdapter import DataAdapter
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())  # temporary for testing purposes
+db = DatabaseConnection()
+
+user_service = UserService(db)  # temporary for testing purposes
 
 
 @app.route('/')
@@ -87,26 +90,75 @@ def home():
     return redirect(url_for('login'))
 
 
+@app.route('/redirectPreferences', methods=['POST'])
+def redirectPreferences():
+
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', cities_list=user.Cities)
+
+
+@app.route('/redirectHome', methods=['POST'])
+def redirectHome():
+
+    return render_template('home.html')
+
+
+@app.route('/changeNotification', methods=['POST'])
+def changeNotification():
+    notifications = 'notifications' in request.form
+
+    db.update_user_receive_notifications(session['username'], notifications)
+
+    if notifications:
+        message = 'Preferencia alterada para receber notificações!'
+    else:
+        message = 'Preferencia alterada para não receber notificações!'
+    
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
+
+
 @app.route('/addCity', methods=['POST'])
 def addCity():
     city = request.form['city']
-    heat = 'heat' in request.form['heat']
-    rain = 'rain' in request.form['rain']
-    wind = 'wind' in request.form['wind']
 
+    city = city.lower()
+    city[0] = city[0].upper()
+
+    adapter = DataAdapter()
+    response = adapter.get_data(city)
+
+    if response is None:
+        message = 'Erro: Cidade não existe.'
+        user = db.get_user_by_name(session['username'])
+
+        return render_template('preferences.html', message=message, cities_list=user.Cities)
+        
     
-    return redirect(url_for('signup_success'))
+    try: 
+        db.add_city_to_user(session['username'], city)
+        message = 'Cidade cadastrada com sucesso!'
+    
+    except:
+        message = 'Erro: Cidade já cadastrada.'
+    
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
 
 
 @app.route('/removeCity', methods=['POST'])
 def removeCity():
-    city = request.form['city']
-    remove = 'remove' in request.form['remove']
-    notifications = 'notifications' in request.form['notifications']
-
+    city = str(request.form.get('inputState'))
     
-    return redirect(url_for('signup_success'))
+    db.remove_city_to_user(session['username'], city)
+    message = 'Cidade removida com sucesso!'
+    
+    user = db.get_user_by_name(session['username'])
 
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
 
 
 
