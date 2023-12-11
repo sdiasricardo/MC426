@@ -9,9 +9,9 @@ sys.path.append(parent_directory + "/ExternalConnections")
 
 from User import User
 from UserService import UserService
-from Enums.user_signup_situation import user_signup_situation
+from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
-#from tests.RegistrationHandlerTest import DatabaseConnectionMock  # temporary for testing purposes
+from DataPlotter import DataPlotter as data_plotter
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
@@ -32,15 +32,15 @@ def signup():
     city = request.form['city']  # Get the 'City' field from the form
     receive_notifications = 'notifications' in request.form  # Check if the 'Receber notificações' checkbox is checked
 
-    user = User(username, email, password, city, receive_notifications)
+    user = User(name=username, email=email, password=password, receive_notifications=receive_notifications)
 
     response = user_service.register(user)
 
-    if response is user_signup_situation.USERNAME_TAKEN:
+    if response.value == UserSignupSituation.USERNAME_TAKEN.value:
         return render_template('signup.html', message='Nome de usuário já registrado, por favor escolha outro.',
                                username="", email=email)
 
-    elif response is user_signup_situation.EMAIL_TAKEN:
+    elif response.value is UserSignupSituation.EMAIL_TAKEN.value:
         return render_template('signup.html', message='Já existe uma conta registrada com esse email',
                                username=username, email="")
 
