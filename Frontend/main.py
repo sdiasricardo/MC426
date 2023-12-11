@@ -108,9 +108,16 @@ def redirectHome():
 def changeNotification():
     notifications = 'notifications' in request.form
 
-    flash("Success! Notification preferences saved.")
+    db.update_user_receive_notifications(session['username'], notifications)
+
+    if notifications:
+        message = 'Preferencia alterada para receber notificações!'
+    else:
+        message = 'Preferencia alterada para não receber notificações!'
     
-    return render_template('preferences.html')
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
 
 
 @app.route('/addCity', methods=['POST'])
@@ -125,7 +132,10 @@ def addCity():
 
     if response is None:
         message = 'Erro: Cidade não existe.'
-        return render_template('preferences.html', message=message)
+        user = db.get_user_by_name(session['username'])
+
+        return render_template('preferences.html', message=message, cities_list=user.Cities)
+        
     
     try: 
         db.add_city_to_user(session['username'], city)
@@ -134,24 +144,21 @@ def addCity():
     except:
         message = 'Erro: Cidade já cadastrada.'
     
-    return render_template('preferences.html', message=message)
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
 
 
 @app.route('/removeCity', methods=['POST'])
 def removeCity():
-    city = request.form['city']
-
-    city = city.lower()
-    city[0] = city[0].upper()
-
-    try: 
-        db.remove_city_to_user(session['username'], city)
-        message = 'Cidade removida com sucesso!'
+    city = str(request.form.get('inputState'))
     
-    except:
-        message = 'Erro: Cidade não cadastrada.'
+    db.remove_city_to_user(session['username'], city)
+    message = 'Cidade removida com sucesso!'
     
-    return render_template('preferences.html', message=message)
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
 
 
 
