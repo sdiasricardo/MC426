@@ -13,11 +13,13 @@ from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
 from Services.DataPlot.DataPlotter import DataPlotter
 from Services.DataPlot.DataAdapter import DataAdapter
-from tests.create_mock_users import DatabaseConnectionMock
+
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnectionMock())  # temporary for testing purposes
+db = DatabaseConnection()
+
+user_service = UserService(db)  # temporary for testing purposes
 
 
 @app.route('/')
@@ -88,11 +90,23 @@ def home():
     return redirect(url_for('login'))
 
 
+@app.route('/redirectPreferences', methods=['POST'])
+def redirectPreferences():
+
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', cities_list=user.Cities)
+
+
+@app.route('/redirectHome', methods=['POST'])
+def redirectHome():
+
+    return render_template('home.html')
+
+
 @app.route('/changeNotification', methods=['POST'])
 def changeNotification():
     notifications = 'notifications' in request.form
-
-    # user.ReceiveNotifications = notifications
 
     flash("Success! Notification preferences saved.")
     
@@ -103,38 +117,41 @@ def changeNotification():
 def addCity():
     city = request.form['city']
 
+    city = city.lower()
+    city[0] = city[0].upper()
+
     adapter = DataAdapter()
     response = adapter.get_data(city)
 
     if response is None:
-        flash("Invalid: City does not exist.")
-        return redirect(url_for("addCity"))
+        message = 'Erro: Cidade não existe.'
+        return render_template('preferences.html', message=message)
     
-    # user.Cities.append(city)
-
-    flash("Success! City added.")
-
+    try: 
+        db.add_city_to_user(session['username'], city)
+        message = 'Cidade cadastrada com sucesso!'
     
-    return render_template('preferences.html')
+    except:
+        message = 'Erro: Cidade já cadastrada.'
+    
+    return render_template('preferences.html', message=message)
 
 
 @app.route('/removeCity', methods=['POST'])
 def removeCity():
     city = request.form['city']
 
-    # SE FOR DROPDOWN NAO PRECISA
-    # if city not in user.cities:
-    #     flash("Invalid: City is not in your profile.")
-    #     return redirect(url_for("removeCity"))
+    city = city.lower()
+    city[0] = city[0].upper()
 
-    # user.cities.remove(city)
-
-    moc = ['meu pau', 'meu ovo']
-
-    flash("Success! City removed")
-
+    try: 
+        db.remove_city_to_user(session['username'], city)
+        message = 'Cidade removida com sucesso!'
     
-    return render_template('preferences.html')
+    except:
+        message = 'Erro: Cidade não cadastrada.'
+    
+    return render_template('preferences.html', message=message)
 
 
 
