@@ -62,8 +62,7 @@ class DataProcessor:
         date_range = pd.date_range('00:00', '23:00', freq='H')
         hours_series = pd.Series(date_range.strftime('%H:%M'))
         dayIndex = self._get_day_index(day)
-        info_col = list()
-        return pd.DataFrame({'Hours': hours_series, 'Temp (°C)': pd.Series(self._build_info_col(info_col, dayIndex, info))})
+        return pd.DataFrame({'Hours': hours_series, 'info': pd.Series(self._build_info_col([], dayIndex, info))})
 
     def get_general_info(self, query: str, day: str):
         self._set_data(query)

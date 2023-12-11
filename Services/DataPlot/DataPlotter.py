@@ -26,12 +26,16 @@ class DataPlotter:
 
     def plot_day_temp(self, query, day):
         self._set_df(query, day, 'temp')
-        fig = px.area(self.df, x = 'Hours', y = self.df['Temp (°C)'], title = f'{query}')
+        self.df.rename(columns={"info": "Temp °C"}, inplace= True)
+        fig = px.area(self.df, x = 'Hours', y = self.df['Temp °C'], title = f'{query}')
+        fig.update_layout(yaxis_title = 'Temp °C')
         return fig
 
     def plot_day_rain(self, query, day):
         self._set_df(query, day, 'rain')
+        self.df.rename(columns={'info': 'Chuva %'}, inplace = True)
         fig = px.histogram(self.df, x = 'Hours', y = self.df['Chuva %'], title = f'{query}')
+        fig.update_layout(yaxis_title = 'Chuva %')
         fig.update_xaxes(range=[-0.5, 23.5])
         return fig
 
@@ -49,5 +53,5 @@ class DataPlotter:
 
 if __name__ == '__main__':
     plotter = DataPlotter()
-    plotter.create_plot('Berlin', 'rain', '2023-12-12').show()
+    plotter.create_plot('Berlin', 'temp', '2023-12-12').show()
 
