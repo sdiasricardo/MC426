@@ -146,7 +146,47 @@ class DatabaseConnection:
 
         return possible_user is not None
 
+    def get_user_by_name(self, name):
+        query = (sa.select(self.users, self.cities)) \
+            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id)).where(self.users.c.username == name)
+
+
+        connection = self.engine.connect()
+
+        result = connection.execute(query)
+
+        users_db = result.fetchall()
+
+        connection.close()
+
+        user = User(users_db[0][0], users_db[0][1], users_db[0][2], users_db[0][3], receive_notifications=users_db[0][5])
+
+        for user_db in users_db:
+            user.Cities.append(user_db[7])
+
+        return user
+
+
+    def add_city_to_user(self, username, city):
+        user = self.get_user_by_name(username)
+
+        if city not in user.Cities:
+            insert = sa.insert(self.cities).values(user_id=user.Id, city=city)
+            connection = self.engine.connect()
+            connection.execute(insert)
+            connection.commit()
+            connection.close()
+            return
+
+
+        raise Exception("Cidade já cadastrada")
+
+
+
+
 if __name__ == '__main__':
     db = DatabaseConnection()
 
     db.get_all_users()
+    db.add_city_to_user('jonas', 'Fortaleza')
+    print()
