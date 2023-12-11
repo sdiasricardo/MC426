@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sys
 import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -11,12 +11,13 @@ from User import User
 from UserService import UserService
 from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
-from DataPlotter import DataPlotter as data_plotter
-
+from Services.DataPlot.DataPlotter import DataPlotter
+from Services.DataPlot.DataAdapter import DataAdapter
+from tests.create_mock_users import DatabaseConnectionMock
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())  # temporary for testing purposes
+user_service = UserService(DatabaseConnectionMock())  # temporary for testing purposes
 
 
 @app.route('/')
@@ -87,26 +88,53 @@ def home():
     return redirect(url_for('login'))
 
 
+@app.route('/changeNotification', methods=['POST'])
+def changeNotification():
+    notifications = 'notifications' in request.form
+
+    # user.ReceiveNotifications = notifications
+
+    flash("Success! Notification preferences saved.")
+    
+    return render_template('preferences.html')
+
+
 @app.route('/addCity', methods=['POST'])
 def addCity():
     city = request.form['city']
-    heat = 'heat' in request.form['heat']
-    rain = 'rain' in request.form['rain']
-    wind = 'wind' in request.form['wind']
+
+    adapter = DataAdapter()
+    response = adapter.get_data(city)
+
+    if response is None:
+        flash("Invalid: City does not exist.")
+        return redirect(url_for("addCity"))
+    
+    # user.Cities.append(city)
+
+    flash("Success! City added.")
 
     
-    return redirect(url_for('signup_success'))
+    return render_template('preferences.html')
 
 
 @app.route('/removeCity', methods=['POST'])
 def removeCity():
     city = request.form['city']
-    remove = 'remove' in request.form['remove']
-    notifications = 'notifications' in request.form['notifications']
+
+    # SE FOR DROPDOWN NAO PRECISA
+    # if city not in user.cities:
+    #     flash("Invalid: City is not in your profile.")
+    #     return redirect(url_for("removeCity"))
+
+    # user.cities.remove(city)
+
+    moc = ['meu pau', 'meu ovo']
+
+    flash("Success! City removed")
 
     
-    return redirect(url_for('signup_success'))
-
+    return render_template('preferences.html')
 
 
 
