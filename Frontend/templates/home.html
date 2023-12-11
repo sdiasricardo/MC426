@@ -204,7 +204,12 @@
         <div class="sidebar" id="sidebar">
             <h2>Weather App</h2>
             <a class="sidebar-item" href="#profile"><i class="fas fa-user" id="profile"></i></a>
-            <a class="sidebar-item" href="{{ url_for('logout') }}" id="logout"><i class="fas fa-sign-out-alt"></i></a>
+
+            <a class="sidebar-item" href="{{ url_for('login') }}" id="logout"><i class="fas fa-sign-out-alt"></i></a>
+            <form action="/redirectPreferences" method="POST">
+                <button type="submit" class="sidebar-item btn btn-primary">Preferences</button>
+            </form>
+
             <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="top-bar" id="top-bar">
