@@ -5,7 +5,7 @@ from geopy.geocoders import Nominatim
 class Geolocator:
 
     @staticmethod
-    def get_current_location():
+    def get_coordinates():
 
         location = geocoder.ipinfo().latlng
 
@@ -16,7 +16,8 @@ class Geolocator:
             print('Unable to retrieve location information.')
 
     @staticmethod
-    def get_location_by_coordinates(tuple):
+    def get_current_location():
+        tuple = Geolocator.get_coordinates()
         try:
             geolocator = Nominatim(user_agent="geoapiExercises")
             location = geolocator.reverse((tuple[0], tuple[1]), exactly_one=True)
@@ -30,3 +31,6 @@ class Geolocator:
         except Exception as e:
             print(f"Error: {e}")
             return None
+        
+if __name__ == '__main__':
+    print(Geolocator.get_current_location())

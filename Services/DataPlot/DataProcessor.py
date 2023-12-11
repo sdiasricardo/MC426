@@ -8,7 +8,8 @@ sys.path.append(absolute_directory)
 sys.path.append(absolute_directory + "/Services/DataPlot/")
 
 from DataAdapter import DataAdapter
-from datetime import datetime, timedelta
+from datetime import datetime
+from ExternalConnections.api.geolocator import Geolocator
 
 class DataProcessor:
     def __init__(self):
@@ -78,17 +79,17 @@ class DataProcessor:
         info['temp_max'] = self.data['forecast']['forecastday'][dayIndex]['day']['maxtemp_c']
         return info
 
+    def get_geolocator_info(self):
+        current_place = Geolocator.get_current_location()
+        date_today = str(datetime.today()).split(' ')[0]
+        return self.get_general_info(current_place, date_today)
 
     def get_alerts(self, query: str):
         self._set_data(query)
         return self.data['alerts']['alert']
 
-    def _build_df(self, columns: list):
-        dates = pd.Series()
-        for col in columns:
-            pass
-
 if __name__ == '__main__':
-    DataProcessor.clear_cache()
+    processor = DataProcessor()
+    print(processor.get_geolocator_info())
 
     
