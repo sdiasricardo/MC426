@@ -178,8 +178,22 @@ class DatabaseConnection:
             connection.close()
             return
 
-
         raise Exception("Cidade já cadastrada")
+
+    def remove_city_to_user(self, username, city):
+        user = self.get_user_by_name(username)
+
+        if city in user.Cities:
+            remove = sa.delete(self.cities)\
+                .where(sa.and_(self.cities.c.city == city, self.cities.c.user_id == user.Id))
+
+            connection = self.engine.connect()
+            connection.execute(remove)
+            connection.commit()
+            connection.close()
+            return
+
+        raise Exception("Usuário não possui essa cidade")
 
 
 
@@ -188,5 +202,5 @@ if __name__ == '__main__':
     db = DatabaseConnection()
 
     db.get_all_users()
-    db.add_city_to_user('jonas', 'Fortaleza')
+    db.remove_city_to_user('jonas', 'Fortaleza')
     print()
