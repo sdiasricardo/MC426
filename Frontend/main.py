@@ -28,7 +28,7 @@ data_plotter = data_plotter()
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
-fig = data_plotter.create_plot('Paris', 'rain', '2023-12-12')
+fig = data_plotter.plot_day_temp('Paris', '2023-12-12')
 
 dash_app.layout = html.Div([
     dcc.Graph(id='graph-container', figure=fig)

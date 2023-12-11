@@ -82,16 +82,17 @@
             text-align: left;
             position: fixed;
             width: calc(100% - 60px); /* Set width to 100% minus the width of the sidebar */
-            height: 12%;
+            height: 80px;
             z-index: 1000;
             transition: margin-left 0.3s ease;
             margin-left: 60px;
+            margin-bottom: 10px;
             overflow: hidden;
         }
 
         .sidebar {
             width: 60px;
-            height: 100vh;
+            height: 100%;
             background-color: #333;
             padding: 20px;
             color: white;
@@ -108,19 +109,22 @@
             justify-content: center;
             margin-top: 50px;
             flex-direction: column;
+            height: 80%
         }
 
         .weather-container {
             background-color: #ffffff;
-            padding: 80px;
+            padding: 30px;
             border-radius: 5px;
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
             text-align: center;
-            height: 80vh;
+            height: 78vh;
             width: 100%;
             justify-content: center;
             display: flex;
             flex-direction: column;
+            gap: 20px;
+            align-items: flex-end;
         }
 
         h1 {
@@ -172,6 +176,26 @@
             flex-direction: row;
         }
 
+        .button-container {
+          display: flex;
+          gap: 10px;
+        }
+
+        .button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px;
+          border: 1px solid #3498db; /* Button border color */
+          border-radius: 5px;
+          cursor: pointer;
+          color: #fff; /* Text color */
+          background-color: #3498db; /* Button background color */
+          transition: background-color 0.3s ease; /* Add transition effect
+          margin-bottom: 20px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -204,7 +228,20 @@
             </div>
         </div>
         <div class="weather-container">
+            <div class="button-container">
+
+                <div class="button" onclick="handleThermometerClick()">
+                    <i class="fas fa-thermometer-half"></i>
+                </div>
+
+                <div class="button" onclick="handleRaindropClick()">
+                    <i class="fas fa-tint"></i>
+                </div>
+
+            </div>
+
                 <iframe src="{{dash_url}}"></iframe>
+
         </div>
     </div>
 
@@ -240,6 +277,9 @@
             topbar.style.marginLeft = sidebar.style.width === '60px' ? '250px' : '60px';
             sidebar.style.width = sidebar.style.width === '60px' ? '250px' : '60px';
         }
+
+        
+
     </script>
 </body>
 </html>
