@@ -14,7 +14,6 @@ from Entities.User import User
 from Entities.Enums.UserSignupSituation import UserSignupSituation
 
 
-
 class DatabaseConnection:
     def __init__(self):
         self.engine = sa.create_engine("mysql://root:12345678@localhost/eng_software_teste")
@@ -59,7 +58,6 @@ class DatabaseConnection:
 
             return UserSignupSituation.USERNAME_TAKEN
 
-
         return UserSignupSituation.SUCCESS
 
     def create_user(self, user):
@@ -78,7 +76,6 @@ class DatabaseConnection:
             print(f"Error inserting user: {e}")
 
         connection.close()
-
 
     def get_all_users(self):
         # query = sa.select(self.users)
@@ -129,7 +126,6 @@ class DatabaseConnection:
         return users_list
 
 
-
     def validate_user_login(self, username, password):
         query = sa.select(self.users).where(
             sa.and_(self.users.c.username == username, self.users.c.password == password)
@@ -146,7 +142,58 @@ class DatabaseConnection:
 
         return possible_user is not None
 
+    def get_user_by_name(self, name):
+        query = (sa.select(self.users, self.cities)) \
+            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id)).where(self.users.c.username == name)
+
+
+        connection = self.engine.connect()
+
+        result = connection.execute(query)
+
+        users_db = result.fetchall()
+
+        connection.close()
+
+        user = User(users_db[0][0], users_db[0][1], users_db[0][2], users_db[0][3], receive_notifications=users_db[0][5])
+
+        for user_db in users_db:
+            user.Cities.append(user_db[7])
+
+        return user
+
+    def add_city_to_user(self, username, city):
+        user = self.get_user_by_name(username)
+
+        if city not in user.Cities:
+            insert = sa.insert(self.cities).values(user_id=user.Id, city=city)
+            connection = self.engine.connect()
+            connection.execute(insert)
+            connection.commit()
+            connection.close()
+            return
+
+        raise Exception("Cidade já cadastrada")
+
+    def remove_city_to_user(self, username, city):
+        user = self.get_user_by_name(username)
+
+        if city in user.Cities:
+            remove = sa.delete(self.cities)\
+                .where(sa.and_(self.cities.c.city == city, self.cities.c.user_id == user.Id))
+
+            connection = self.engine.connect()
+            connection.execute(remove)
+            connection.commit()
+            connection.close()
+            return
+
+        raise Exception("Usuário não possui essa cidade")
+
+
 if __name__ == '__main__':
     db = DatabaseConnection()
 
     db.get_all_users()
+    db.remove_city_to_user('jonas', 'Fortaleza')
+    print()
