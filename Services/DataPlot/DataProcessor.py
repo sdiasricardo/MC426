@@ -44,23 +44,26 @@ class DataProcessor:
         number_of_days = time_difference.days + 1
         return number_of_days
 
+    def _build_info_col(self, column : list, day: int, info: str):
+        match info:
+            case 'temp':
+                for hour_idx in range(24):
+                    column.append(self.data['forecast']['forecastday'][day]['hour'][hour_idx]['temp_c'])
+                return column
+            case 'rain':
+                for hour_idx in range(24):
+                    column.append(self.data['forecast']['forecastday'][day]['hour'][hour_idx]['chance_of_rain'])
+                return column
+            case _:
+                raise Exception('info not matched')
+            
     def get_df(self, query: str, day: str, info: str):
         self._set_data(query)
         date_range = pd.date_range('00:00', '23:00', freq='H')
         hours_series = pd.Series(date_range.strftime('%H:%M'))
         dayIndex = self._get_day_index(day)
         info_col = list()
-        match info:
-            case 'temp':
-                for i in range(24):
-                    info_col.append(self.data['forecast']['forecastday'][dayIndex]['hour'][i]['temp_c'])
-                return pd.DataFrame({'Hours': hours_series, 'Temp (°C)': pd.Series(info_col)})
-            case 'rain':
-                for i in range(24):
-                    info_col.append(self.data['forecast']['forecastday'][dayIndex]['hour'][i]['chance_of_rain'])
-                return pd.DataFrame({'Hours': hours_series, 'Chuva %': pd.Series(info_col)})
-            case _:
-                raise Exception('info not matched')
+        return pd.DataFrame({'Hours': hours_series, 'Temp (°C)': pd.Series(self._build_info_col(info_col, dayIndex, info))})
 
     def get_general_info(self, query: str, day: str):
         self._set_data(query)
@@ -89,6 +92,6 @@ class DataProcessor:
             pass
 
 if __name__ == '__main__':
-    DataProcessor.clear_cache()
-
+    processor = DataProcessor()
+    print(processor.get_df('Sydney', '2023-12-11', 'temp'))
     
