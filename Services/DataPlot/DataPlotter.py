@@ -23,33 +23,22 @@ class DataPlotter:
         
     def _set_df(self, query: str, day: str, info: str) -> dict | None:
         self.df = self.dataProcessor.get_df(query, day, info)
-
-    def plot_day_temp(self, query, day):
-        self._set_df(query, day, 'temp')
-        self.df.rename(columns={"info": "Temp °C"}, inplace= True)
-        fig = px.area(self.df, x = 'Hours', y = self.df['Temp °C'], title = f'{query}')
-        fig.update_layout(yaxis_title = 'Temp °C')
-        return fig
-
-    def plot_day_rain(self, query, day):
-        self._set_df(query, day, 'rain')
-        self.df.rename(columns={'info': 'Chuva %'}, inplace = True)
-        fig = px.histogram(self.df, x = 'Hours', y = self.df['Chuva %'], title = f'{query}')
-        fig.update_layout(yaxis_title = 'Chuva %')
-        fig.update_xaxes(range=[-0.5, 23.5])
-        return fig
-
+    
     def create_plot(self, query: str, info: str, day: str):
+        self._set_df(query, day, info)
         match info:
-            case 'temp':
-                return self.plot_day_temp(query, day)
-            case 'rain':
-                return self.plot_day_rain(query, day)
+            case 'Temp °C':
+                fig = px.area(self.df, x = 'Hora', y = self.df['Temp °C'], title = f'{query}')
+            case 'Chuva %':
+                fig = px.bar(self.df, x='Hora', y='Chuva %', title=f'{query}')
+                fig.update_traces(texttemplate='%{y}', textposition='outside')
+                fig.update_xaxes(range=[-0.5, 23.5])
             case _:
                 raise Exception('Invalid Info')
+        return fig
 
 
 if __name__ == '__main__':
     plotter = DataPlotter()
-    plotter.create_plot('Berlin', 'temp', '2023-12-12').show()
+    plotter.create_plot('Berlin', 'Chuva %', '2023-12-12').show()
 

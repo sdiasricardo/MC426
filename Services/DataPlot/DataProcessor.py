@@ -46,11 +46,11 @@ class DataProcessor:
 
     def _build_info_col(self, column : list, day: int, info: str):
         match info:
-            case 'temp':
+            case 'Temp °C':
                 for hour_idx in range(24):
                     column.append(self.data['forecast']['forecastday'][day]['hour'][hour_idx]['temp_c'])
                 return column
-            case 'rain':
+            case 'Chuva %':
                 for hour_idx in range(24):
                     column.append(self.data['forecast']['forecastday'][day]['hour'][hour_idx]['chance_of_rain'])
                 return column
@@ -62,7 +62,7 @@ class DataProcessor:
         date_range = pd.date_range('00:00', '23:00', freq='H')
         hours_series = pd.Series(date_range.strftime('%H:%M'))
         dayIndex = self._get_day_index(day)
-        return pd.DataFrame({'Hours': hours_series, 'info': pd.Series(self._build_info_col([], dayIndex, info))})
+        return pd.DataFrame({'Hora': hours_series, info: pd.Series(self._build_info_col([], dayIndex, info))})
 
     def get_general_info(self, query: str, day: str):
         self._set_data(query)
