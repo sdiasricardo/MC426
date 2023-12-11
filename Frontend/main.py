@@ -11,13 +11,13 @@ from User import User
 from UserService import UserService
 from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
-from DataPlotter import DataPlotter as data_plotter
+from Services.DataPlot.DataPlotter import DataPlotter
 from Services.DataPlot.DataAdapter import DataAdapter
-
+from tests.create_mock_users import DatabaseConnectionMock
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())  # temporary for testing purposes
+user_service = UserService(DatabaseConnectionMock())  # temporary for testing purposes
 
 
 @app.route('/')
@@ -128,6 +128,8 @@ def removeCity():
     #     return redirect(url_for("removeCity"))
 
     # user.cities.remove(city)
+
+    moc = ['meu pau', 'meu ovo']
 
     flash("Success! City removed")
 
