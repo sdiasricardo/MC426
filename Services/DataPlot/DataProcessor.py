@@ -15,7 +15,8 @@ class DataProcessor:
         self.data = None
         self.dataAdapter = DataAdapter()
 
-    def clear_cache(self):
+    @staticmethod
+    def clear_cache():
         '''
         Intended to be used when the user logs out
         '''
@@ -88,7 +89,6 @@ class DataProcessor:
             pass
 
 if __name__ == '__main__':
-    teste = DataProcessor()
-    teste.clear_cache()
+    DataProcessor.clear_cache()
 
     

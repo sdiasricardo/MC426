@@ -1,13 +1,13 @@
 #TODO colocar como dependencia geocoder
 import geocoder
+from geopy.geocoders import Nominatim
 
 class Geolocator:
-    def __init__(self):
-        self.geoloc = geocoder.ipinfo()
 
-    def get_current_location(self):
+    @staticmethod
+    def get_current_location():
 
-        location = self.geoloc.latlng
+        location = geocoder.ipinfo().latlng
 
         if location:
             latitude, longitude = location
@@ -15,5 +15,18 @@ class Geolocator:
         else:
             print('Unable to retrieve location information.')
 
-geoloc = Geolocator()
-print(geoloc.get_current_location())
+    @staticmethod
+    def get_location_by_coordinates(tuple):
+        try:
+            geolocator = Nominatim(user_agent="geoapiExercises")
+            location = geolocator.reverse((tuple[0], tuple[1]), exactly_one=True)
+            address = location.raw['address']
+            city = address.get('city', '')
+            if not city:  # sometimes city is not available then try some other keys
+                city = address.get('town', '')
+            if not city:
+                city = address.get('village', '')
+            return city
+        except Exception as e:
+            print(f"Error: {e}")
+            return None

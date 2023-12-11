@@ -6,7 +6,7 @@ sys.path.append(parent_directory + "/Entities")
 sys.path.append(parent_directory + "/ExternalConnections/database")
 
 from DatabaseConnection import DatabaseConnection
-from Enums.user_signup_situation import user_signup_situation
+from Enums.UserSignupSituation import UserSignupSituation
 
 
 class UserService:
@@ -18,8 +18,7 @@ class UserService:
 
         situation = self.Connection.validate_user_signup(user.Name, user.Email)
 
-        if situation is not user_signup_situation.SUCCESS:
-
+        if situation.value != UserSignupSituation.SUCCESS.value:
             return situation
 
         self.Connection.create_user(user)

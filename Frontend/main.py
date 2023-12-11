@@ -1,53 +1,34 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sys
 import os
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
 sys.path.append(parent_directory + "/Services")
-sys.path.append(parent_directory + "/Services/DataPlot")
 sys.path.append(parent_directory + "/ExternalConnections")
 
 from User import User
 from UserService import UserService
-from Enums.user_signup_situation import user_signup_situation
+from Enums.UserSignupSituation import UserSignupSituation
 from DatabaseConnection import DatabaseConnection
-from DataPlotter import DataPlotter as data_plotter
-
-
+from Services.DataPlot.DataPlotter import DataPlotter
+from Services.DataPlot.DataAdapter import DataAdapter
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-user_service = UserService(DatabaseConnection())
 data_plotter = data_plotter()
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
 fig = data_plotter.plot_day_temp('Paris', '2023-12-12')
 
-dash_app.layout = html.Div([
-    dcc.Graph(id='graph-container', figure=fig)
-])
-
-"""dcc.Dropdown(
-        id='dropdown',
-        options=[
-            {'label': 'Option 1', 'value': 'option1'},
-            {'label': 'Option 2', 'value': 'option2'},
-        ],
-        value='option1'
-    ),"""
+db = DatabaseConnection()
 
 
-@dash_app.callback(
-    dash.dependencies.Output('graph-container', 'figure'),
-    [dash.dependencies.Input('dropdown', 'value')]
-)
+user_service = UserService(db)  # temporary for testing purposes
+
+
 @app.route('/')
 def index():
     return render_template('signup.html', username="", email="")
@@ -61,15 +42,15 @@ def signup():
     city = request.form['city']  # Get the 'City' field from the form
     receive_notifications = 'notifications' in request.form  # Check if the 'Receber notificações' checkbox is checked
 
-    user = User(username, email, password, city, receive_notifications)
+    user = User(name=username, email=email, password=password, receive_notifications=receive_notifications)
 
     response = user_service.register(user)
 
-    if response is user_signup_situation.USERNAME_TAKEN:
+    if response.value == UserSignupSituation.USERNAME_TAKEN.value:
         return render_template('signup.html', message='Nome de usuário já registrado, por favor escolha outro.',
                                username="", email=email)
 
-    elif response is user_signup_situation.EMAIL_TAKEN:
+    elif response.value is UserSignupSituation.EMAIL_TAKEN.value:
         return render_template('signup.html', message='Já existe uma conta registrada com esse email',
                                username=username, email="")
 
@@ -80,13 +61,13 @@ def signup():
 
 @app.route('/signup-success/')
 def signup_success():
+
     if 'username' in session:
         username = session['username']
         session.clear()
         return render_template('signup_success.html', username=username)
 
     return redirect(url_for('index'))
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -106,16 +87,11 @@ def login():
 
     return render_template('login.html')
 
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
 @app.route('/home')
 def home():
     if 'username' in session:
         username = session['username']
+
         return render_template('home.html',
                                username=username,
                                dash_url='http://127.0.0.1:5000/dash/',
@@ -124,6 +100,78 @@ def home():
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
+
+
+@app.route('/redirectPreferences', methods=['POST'])
+def redirectPreferences():
+
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', cities_list=user.Cities)
+
+
+@app.route('/redirectHome', methods=['POST'])
+def redirectHome():
+
+    return render_template('home.html')
+
+
+@app.route('/changeNotification', methods=['POST'])
+def changeNotification():
+    notifications = 'notifications' in request.form
+
+    db.update_user_receive_notifications(session['username'], notifications)
+
+    if notifications:
+        message = 'Preferencia alterada para receber notificações!'
+    else:
+        message = 'Preferencia alterada para não receber notificações!'
+    
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
+
+
+@app.route('/addCity', methods=['POST'])
+def addCity():
+    city = request.form['city']
+
+    city = city.lower()
+    city[0] = city[0].upper()
+
+    adapter = DataAdapter()
+    response = adapter.get_data(city)
+
+    if response is None:
+        message = 'Erro: Cidade não existe.'
+        user = db.get_user_by_name(session['username'])
+
+        return render_template('preferences.html', message=message, cities_list=user.Cities)
+        
+    
+    try: 
+        db.add_city_to_user(session['username'], city)
+        message = 'Cidade cadastrada com sucesso!'
+    
+    except:
+        message = 'Erro: Cidade já cadastrada.'
+    
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
+
+
+@app.route('/removeCity', methods=['POST'])
+def removeCity():
+    city = str(request.form.get('inputState'))
+    
+    db.remove_city_to_user(session['username'], city)
+    message = 'Cidade removida com sucesso!'
+    
+    user = db.get_user_by_name(session['username'])
+
+    return render_template('preferences.html', message=message, cities_list=user.Cities)
+
 
 
 @app.errorhandler(404)
