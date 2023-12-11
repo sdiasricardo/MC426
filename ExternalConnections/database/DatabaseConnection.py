@@ -125,14 +125,12 @@ class DatabaseConnection:
 
         return users_list
 
-
     def validate_user_login(self, username, password):
         query = sa.select(self.users).where(
             sa.and_(self.users.c.username == username, self.users.c.password == password)
         )
 
         connection = self.engine.connect()
-
 
         result = connection.execute(query)
 
@@ -145,7 +143,6 @@ class DatabaseConnection:
     def get_user_by_name(self, name):
         query = (sa.select(self.users, self.cities)) \
             .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id)).where(self.users.c.username == name)
-
 
         connection = self.engine.connect()
 
@@ -190,10 +187,22 @@ class DatabaseConnection:
 
         raise Exception("Usuário não possui essa cidade")
 
+    def update_user_receive_notifications(self, username, receive_notifications):
+        user = self.get_user_by_name(username)
+
+        update = sa.update(self.users)\
+            .where(self.users.c.username == username)\
+            .values(receive_notifications=receive_notifications)
+
+        connection = self.engine.connect()
+        connection.execute(update)
+        connection.commit()
+        connection.close()
+
 
 if __name__ == '__main__':
     db = DatabaseConnection()
 
     db.get_all_users()
-    db.remove_city_to_user('jonas', 'Fortaleza')
+    db.update_user_receive_notifications('jonas', True)
     print()
