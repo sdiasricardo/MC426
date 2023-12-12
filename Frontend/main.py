@@ -28,7 +28,7 @@ data_plotter = DataPlotter()
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
 
-fig = data_plotter.plot_day_temp('Paris', '2023-12-12')
+fig = data_plotter.create_plot('Paris', 'Temp °C', '2023-12-12')
 
 dash_app.layout = html.Div([
     dcc.Graph(id='graph-container', figure=fig)
@@ -141,6 +141,9 @@ def choseCity():
 def changeTemp():
 
     fig = data_plotter.create_plot(session['city'], 'Temp °C', str(dt.today()))
+    dash_app.layout = html.Div([
+        dcc.Graph(id='graph-container', figure=fig)
+    ])
 
     return redirect(url_for('home'))
 
@@ -149,6 +152,9 @@ def changeTemp():
 def changeRain():
 
     fig = data_plotter.create_plot(session['city'], 'Chuva %', str(dt.today()))
+    dash_app.layout = html.Div([
+        dcc.Graph(id='graph-container', figure=fig)
+    ])
 
     return redirect(url_for('home'))
 
