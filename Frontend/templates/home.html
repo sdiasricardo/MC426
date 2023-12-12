@@ -225,13 +225,24 @@
 
     <div class="content">
         <div class="navbar">
-            <div class="dropdown">
-                <button class="dropbtn">Select Option</button>
-                <div class="dropdown-content">
-                    <a href="#">Option 1</a>
-                    <a href="#">Option 2</a>
-                    <a href="#">Option 3</a>
-                </div>
+            <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
+                <form action="/choseCity" method="POST">
+                    
+                    <div class="row mb-3">
+                      
+                      <div class="col-sm-10">
+                        <select id="citysel" name="citysel" class="form-select">
+                          {% for item in cities_list %}
+                            <option value="{{ item }}">{{ item }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-outline-primary">Change</button>
+                    </div>
+                    
+                    
+                    
+                  </form>
             </div>
         </div>
         <div class="weather-container">
