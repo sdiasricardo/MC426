@@ -130,7 +130,8 @@ def choseCity():
     
     city = str(request.form.get('citysel'))
     session['city'] = city
-    fig = data_plotter.create_plot(city, 'Temp °C', str(dt.today()))
+
+    fig = data_plotter.create_plot(city, 'Temp °C',str(dt.today()))
 
     dash_app.layout = html.Div([
         dcc.Graph(id='graph-container', figure=fig)
@@ -147,6 +148,27 @@ def choseCity():
                            name=city)
 
     # return redirect(url_for('home'))
+
+@app.route('/changeTemp', methods=['POST'])
+def changeTemp():
+
+    fig = data_plotter.create_plot(session['city'], 'Temp °C', str(dt.today()))
+    dash_app.layout = html.Div([
+        dcc.Graph(id='graph-container', figure=fig)
+    ])
+
+    return redirect(url_for('home'))
+
+
+@app.route('/changeRain', methods=['POST'])
+def changeRain():
+
+    fig = data_plotter.create_plot(session['city'], 'Chuva %', str(dt.today()))
+    dash_app.layout = html.Div([
+        dcc.Graph(id='graph-container', figure=fig)
+    ])
+
+    return redirect(url_for('home'))
 
 
 

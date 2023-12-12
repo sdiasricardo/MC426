@@ -285,23 +285,20 @@
         <div class="weather-container" id="wrap">
             <div class="row" style="align-items: flex;">
                 <div class="col-sm-6 d-flex" style="padding-left: 1%;">
-                    <div class="piru">
+                    <div>
                         <h1>{{name}}</h1>
                     </div>
                 </div>
 
                 <div class="col-sm-6 d-flex justify-content-end" style="padding-right: 2%;">
                     <div class="button-container">
-                    
-    
-                        <div class="button" onclick="handleThermometerClick()">
-                            <i class="fas fa-thermometer-half"></i>
-                        </div>
-        
-                        <div class="button" onclick="handleRaindropClick()">
-                            <i class="fas fa-tint"></i>
-                        </div>
-        
+                        <form action="/changeTemp" method="POST">
+                            <button type="submit" class="sidebar-item btn btn-primary btn-"><i class="fas fa-thermometer-half"></i></button>
+                        </form>
+
+                        <form action="/changeRain" method="POST">
+                            <button type="submit" class="sidebar-item btn btn-primary btn-"><i class="fas fa-tint"></i></button>
+                        </form>
                     </div>
                 </div>
                 
