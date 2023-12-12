@@ -117,7 +117,17 @@ def choseCity():
     city = str(request.form.get('citysel'))
     fig = data_plotter.plot_day_temp(city, str(dt.today()))
 
-    return redirect(url_for('home'))
+    username = session['username']
+    user = db.get_user_by_name(session['username'])
+    return render_template('home.html',
+                           username=username,
+                           dash_url='http://127.0.0.1:5000/dash/',
+                           city="Campinas",
+                           temperature=20
+                           cities_list=user.Cities, 
+                           name=city)
+
+    # return redirect(url_for('home'))
 
 
 

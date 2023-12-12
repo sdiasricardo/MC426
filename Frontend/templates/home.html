@@ -125,7 +125,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            align-items: flex-end;
+            align-items: flex;
         }
 
         h1 {
@@ -197,6 +197,8 @@
         }
 
 
+        
+
     </style>
 </head>
 <body>
@@ -245,18 +247,32 @@
                   </form>
             </div>
         </div>
-        <div class="weather-container">
-            <div class="button-container">
-
-                <div class="button" onclick="handleThermometerClick()">
-                    <i class="fas fa-thermometer-half"></i>
+        <div class="weather-container" id="wrap">
+            <div class="row" style="align-items: flex;">
+                <div class="col-sm-6 d-flex" style="padding-left: 1%;">
+                    <div class="piru">
+                        <h1>{{name}}</h1>
+                    </div>
                 </div>
 
-                <div class="button" onclick="handleRaindropClick()">
-                    <i class="fas fa-tint"></i>
+                <div class="col-sm-6 d-flex justify-content-end" style="padding-right: 2%;">
+                    <div class="button-container">
+                    
+    
+                        <div class="button" onclick="handleThermometerClick()">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+        
+                        <div class="button" onclick="handleRaindropClick()">
+                            <i class="fas fa-tint"></i>
+                        </div>
+        
+                    </div>
                 </div>
-
+                
+                
             </div>
+            
 
                 <iframe src="{{dash_url}}"></iframe>
 
