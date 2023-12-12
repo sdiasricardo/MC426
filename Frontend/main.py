@@ -140,7 +140,7 @@ def choseCity():
 @app.route('/changeTemp', methods=['POST'])
 def changeTemp():
 
-    fig = data_plotter.create_plot(session['city'], 'Temp °C', dt.today())
+    fig = data_plotter.create_plot(session['city'], 'Temp °C', str(dt.today()))
 
     return redirect(url_for('home'))
 
@@ -148,7 +148,7 @@ def changeTemp():
 @app.route('/changeRain', methods=['POST'])
 def changeRain():
 
-    fig = data_plotter.create_plot(session['city'], 'Chuva %', dt.today())
+    fig = data_plotter.create_plot(session['city'], 'Chuva %', str(dt.today()))
 
     return redirect(url_for('home'))
 
