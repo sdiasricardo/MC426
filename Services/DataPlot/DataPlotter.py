@@ -28,17 +28,12 @@ class DataPlotter:
         self._set_df(query, day, info)
         match info:
             case 'Temp °C':
-                fig = px.area(self.df, x = 'Hora', y = self.df['Temp °C'], title = f'{query}')
+                fig = px.area(self.df, x = 'Hora', y = self.df['Temp °C'])
             case 'Chuva %':
-                fig = px.bar(self.df, x='Hora', y='Chuva %', title=f'{query}')
+                fig = px.bar(self.df, x='Hora', y='Chuva %', color='Chuva %', color_continuous_scale='Blues')
                 fig.update_traces(texttemplate='%{y}', textposition='outside')
                 fig.update_xaxes(range=[-0.5, 23.5])
             case _:
                 raise Exception('Invalid Info')
         return fig
-
-
-if __name__ == '__main__':
-    plotter = DataPlotter()
-    plotter.create_plot('Berlin', 'Chuva %', '2023-12-12').show()
 

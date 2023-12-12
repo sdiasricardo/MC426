@@ -78,17 +78,6 @@ class DatabaseConnection:
         connection.close()
 
     def get_all_users(self):
-        # query = sa.select(self.users)
-        #
-        # connection = self.engine.connect()
-        #
-        # result = connection.execute(query)
-        #
-        # users = result.fetchall()
-        #
-        # connection.close()
-        #
-        # return users
         query = (sa.select(self.users, self.cities))\
             .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id, isouter=True))
 

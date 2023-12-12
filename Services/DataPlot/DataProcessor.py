@@ -89,8 +89,3 @@ class DataProcessor:
         dates = pd.Series()
         for col in columns:
             pass
-
-if __name__ == '__main__':
-    processor = DataProcessor()
-    print(processor.get_df('Sydney', '2023-12-11', 'temp'))
-    
