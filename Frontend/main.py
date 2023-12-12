@@ -4,7 +4,9 @@ import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-import datetime as dt
+from datetime import date as dt
+import geocoder
+import geopy
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
@@ -105,8 +107,9 @@ def home():
                                username=username,
                                dash_url='http://127.0.0.1:5000/dash/',
                                city="Campinas",
-                               temperature=20
-                               cities_list=user.Cities)
+                               temperature=20,
+                               cities_list=user.Cities,
+                               name="cidade")
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
@@ -117,13 +120,17 @@ def choseCity():
     city = str(request.form.get('citysel'))
     fig = data_plotter.plot_day_temp(city, str(dt.today()))
 
+    dash_app.layout = html.Div([
+        dcc.Graph(id='graph-container', figure=fig)
+    ])
+
     username = session['username']
     user = db.get_user_by_name(session['username'])
     return render_template('home.html',
                            username=username,
                            dash_url='http://127.0.0.1:5000/dash/',
                            city="Campinas",
-                           temperature=20
+                           temperature=20,
                            cities_list=user.Cities, 
                            name=city)
 
