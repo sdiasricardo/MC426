@@ -125,7 +125,7 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            align-items: flex-end;
+            align-items: flex;
         }
 
         h1 {
@@ -192,8 +192,34 @@
           cursor: pointer;
           color: #fff; /* Text color */
           background-color: #3498db; /* Button background color */
-          transition: background-color 0.3s ease; /* Add transition effect
+          transition: background-color 0.3s ease; /* Add transition effect*/
           margin-bottom: 20px;
+        }
+
+         .dropdown {
+            border: 2px solid #3498db; /* Add a border with a color of your choice */
+            border-radius: 8px; /* Add rounded corners to the border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+            background-color: #ffffff; /* Set a background color */
+            padding: 20px; /* Add some padding inside the dropdown */
+            width: 120%; /* Set the width of the dropdown */
+            height: 60%;
+            margin: 10% auto; /* Center the dropdown horizontally and add margin at the top */
+            text-align: center; /* Center the text inside the dropdown */
+        }
+
+        .dropdown:hover {
+            background-color: #f5f5f5; /* Change the background color on hover */
+            transition: background-color 0.3s ease; /* Add a smooth transition effect */
+        }
+
+        .dropdown-btn {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
         }
 
 
@@ -225,27 +251,52 @@
 
     <div class="content">
         <div class="navbar">
-            <div class="dropdown">
-                <button class="dropbtn">Select Option</button>
-                <div class="dropdown-content">
-                    <a href="#">Option 1</a>
-                    <a href="#">Option 2</a>
-                    <a href="#">Option 3</a>
-                </div>
+            <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
+                <form action="/choseCity" method="POST">
+                    
+                    <div class="row mb-3">
+                      
+                      <div class="col-sm-10">
+                        <select id="citysel" name="citysel" class="dropdown">
+                          {% for item in cities_list %}
+                            <option value="{{ item }}">{{ item }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-outline-primary">Change</button>
+                    </div>
+                    
+                    
+                    
+                  </form>
             </div>
         </div>
-        <div class="weather-container">
-            <div class="button-container">
-
-                <div class="button" onclick="handleThermometerClick()">
-                    <i class="fas fa-thermometer-half"></i>
+        <div class="weather-container" id="wrap">
+            <div class="row" style="align-items: flex;">
+                <div class="col-sm-6 d-flex" style="padding-left: 1%;">
+                    <div class="piru">
+                        <h1>{{name}}</h1>
+                    </div>
                 </div>
 
-                <div class="button" onclick="handleRaindropClick()">
-                    <i class="fas fa-tint"></i>
+                <div class="col-sm-6 d-flex justify-content-end" style="padding-right: 2%;">
+                    <div class="button-container">
+                    
+    
+                        <div class="button" onclick="handleThermometerClick()">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+        
+                        <div class="button" onclick="handleRaindropClick()">
+                            <i class="fas fa-tint"></i>
+                        </div>
+        
+                    </div>
                 </div>
-
+                
+                
             </div>
+            
 
                 <iframe src="{{dash_url}}"></iframe>
 

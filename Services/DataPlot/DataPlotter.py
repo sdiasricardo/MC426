@@ -23,7 +23,7 @@ class DataPlotter:
         
     def _set_df(self, query: str, day: str, info: str) -> dict | None:
         self.df = self.dataProcessor.get_df(query, day, info)
-    
+
     def create_plot(self, query: str, info: str, day: str):
         self._set_df(query, day, info)
         match info:
