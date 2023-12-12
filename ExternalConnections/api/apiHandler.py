@@ -39,6 +39,6 @@ class ApiHandler():
             self.write_cache(query_place, response)
             return response
         elif response.status_code == 400:
-            raise None
+            return None
         else:
             raise Exception(f'Weather responded with code = {response.status_code}')

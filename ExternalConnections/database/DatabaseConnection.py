@@ -62,7 +62,7 @@ class DatabaseConnection:
 
     def create_user(self, user):
 
-        insert = sa.insert(self.users).values(username=user.Name, email=user.Email, password=user.Password, receive_notifications= user.ReceiveNotifications)
+        insert = sa.insert(self.users).values(username=user.Name, email=user.Email, password=user.Password, receive_notifications=user.ReceiveNotifications)
 
         connection = self.engine.connect()
 
@@ -131,7 +131,8 @@ class DatabaseConnection:
 
     def get_user_by_name(self, name):
         query = (sa.select(self.users, self.cities)) \
-            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id)).where(self.users.c.username == name)
+            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id))\
+            .where(self.users.c.username == name)
 
         connection = self.engine.connect()
 
@@ -140,6 +141,10 @@ class DatabaseConnection:
         users_db = result.fetchall()
 
         connection.close()
+        print(users_db)
+
+        if len(users_db) == 0:
+            return User()
 
         user = User(users_db[0][0], users_db[0][1], users_db[0][2], users_db[0][3], receive_notifications=users_db[0][5])
 
@@ -166,6 +171,8 @@ class DatabaseConnection:
 
     def remove_city_to_user(self, username, city):
         user = self.get_user_by_name(username)
+        print(user.Cities)
+        print(city)
 
         if city in user.Cities:
             remove = sa.delete(self.cities)\
