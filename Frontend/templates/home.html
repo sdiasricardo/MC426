@@ -241,8 +241,19 @@
             <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
         </div>
         <div class="top-bar" id="top-bar">
-            <h2>{{city}}, {{temperature}}º</h2>
-            <i class="fas fa-sun" style="color: #f39c12; font-size: 1.5em;"></i>
+            <div class="row" style="flex-direction: row;">
+                    <div class="col-sm-12 d-flex justify-content-begin" style="display: flex;">
+                        <h2>{{city}}, {{temperature}}º</h2>
+                         <img src="{{icon}}">
+                    </div>
+
+
+
+
+
+
+            </div>
+
         </div>
     </div>
 

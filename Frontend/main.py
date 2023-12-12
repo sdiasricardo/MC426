@@ -12,23 +12,30 @@ parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
 sys.path.append(parent_directory + "/Services")
 sys.path.append(parent_directory + "/ExternalConnections")
+sys.path.append(parent_directory + "/ExternalConnections/api")
 
-from User import User
-from UserService import UserService
-from Enums.UserSignupSituation import UserSignupSituation
-from DatabaseConnection import DatabaseConnection
+from Entities.User import User
+from Services.UserService import UserService
+from Entities.Enums.UserSignupSituation import UserSignupSituation
+from ExternalConnections.database.DatabaseConnection import DatabaseConnection
 from Services.DataPlot.DataPlotter import DataPlotter
 from Services.DataPlot.DataAdapter import DataAdapter
+from Services.DataPlot.DataProcessor import DataProcessor
+from ExternalConnections.api.geolocator import Geolocator
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
 data_plotter = DataPlotter()
+data_processor = DataProcessor()
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
+info = data_processor.get_geolocator_info()
+geolocation_city = info['cidade']
+fig = data_plotter.create_plot(geolocation_city, 'Temp °C', str(dt.today()))
 
-fig = data_plotter.create_plot('Paris', 'Temp °C', '2023-12-12')
+
 
 dash_app.layout = html.Div([
     dcc.Graph(id='graph-container', figure=fig)
@@ -50,7 +57,6 @@ def signup():
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
-    city = request.form['city']  # Get the 'City' field from the form
     receive_notifications = 'notifications' in request.form  # Check if the 'Receber notificações' checkbox is checked
 
     user = User(name=username, email=email, password=password, receive_notifications=receive_notifications)
@@ -82,6 +88,7 @@ def signup_success():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    DataProcessor.clear_cache()
     if request.method == 'POST':
         # Assuming you have a proper authentication mechanism here
         # For simplicity, I'm checking if the username and password match.
@@ -91,6 +98,7 @@ def login():
         # Check if the username and password are valid (you may use a more secure method)
         if user_service.login(username, password):
             session['username'] = username
+            session['city'] = geolocation_city
             return redirect(url_for('home'))
 
         # If the credentials are not valid, you can render the login page with an error message.
@@ -103,13 +111,16 @@ def home():
     if 'username' in session:
         username = session['username']
         user = db.get_user_by_name(session['username'])
+        print(info['icone'])
         return render_template('home.html',
                                username=username,
                                dash_url='http://127.0.0.1:5000/dash/',
-                               city="Campinas",
-                               temperature=20,
+                               city=geolocation_city,
+                               temperature=int(info['temp']),
                                cities_list=user.Cities,
-                               name="cidade")
+                               name=session['city'],
+                               icon=info['icone'])
+
 
     # If the user is not logged in, redirect to the login page
     return redirect(url_for('login'))
@@ -119,6 +130,7 @@ def choseCity():
     
     city = str(request.form.get('citysel'))
     session['city'] = city
+
     fig = data_plotter.create_plot(city, 'Temp °C',str(dt.today()))
 
     dash_app.layout = html.Div([
@@ -130,8 +142,8 @@ def choseCity():
     return render_template('home.html',
                            username=username,
                            dash_url='http://127.0.0.1:5000/dash/',
-                           city="Campinas",
-                           temperature=20,
+                           city=geolocation_city,
+                           temperature=int(info['temp']),
                            cities_list=user.Cities, 
                            name=city)
 

@@ -58,3 +58,7 @@ class AlertUsers:
                     for alert in alerts:
                         alert_list.append(tuple([alert, city]))
                 self.manage_alerts(user, alert_list)
+
+if __name__ == "__main__":
+    notificator = AlertUsers()
+    notificator.check_notification()
