@@ -26,12 +26,12 @@ class DataPlotter:
 
     def plot_day_temp(self, query, day):
         self._set_df(query, day, 'temp')
-        fig = px.area(self.df, x = 'Hours', y = self.df['Temp (°C)'], title = f'{query}')
+        fig = px.area(self.df, x = 'Hours', y = self.df['Temp (°C)'])
         return fig
 
     def plot_day_rain(self, query, day):
         self._set_df(query, day, 'rain')
-        fig = px.histogram(self.df, x = 'Hours', y = self.df['Chuva %'], title = f'{query}')
+        fig = px.histogram(self.df, x = 'Hours', y = self.df['Chuva %'], color = 'Chuva %', color_continuous_scale = 'Blues')
         fig.update_xaxes(range=[-0.5, 23.5])
         return fig
 
