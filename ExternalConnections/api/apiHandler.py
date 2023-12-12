@@ -42,8 +42,3 @@ class ApiHandler():
             return None
         else:
             raise Exception(f'Weather responded with code = {response.status_code}')
-        
-
-if __name__ == '__main__':
-    teste = ApiHandler()
-    print(teste.getJSON('Moscow'))
