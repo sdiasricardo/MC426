@@ -119,7 +119,7 @@ def choseCity():
     
     city = str(request.form.get('citysel'))
     session['city'] = city
-    fig = data_plotter.plot_day_temp(city, str(dt.today()))
+    fig = data_plotter.create_plot(city, 'Temp °C',str(dt.today()))
 
     dash_app.layout = html.Div([
         dcc.Graph(id='graph-container', figure=fig)
