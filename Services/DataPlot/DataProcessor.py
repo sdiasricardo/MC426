@@ -67,18 +67,13 @@ class DataProcessor:
 
     def get_general_info(self, query: str, day: str):
         self._set_data(query)
+        print(self.data)
         dayIndex = self._get_day_index(day)
         info = dict()
         info['cidade'] = self.data['location']['name']
-        info['pais'] = self.data['location']['country']
-        info['horario'] = self.data['location']['localtime']
-        info['icone'] = self.data['forecast']['forecastday'][dayIndex]['day']['condition']['icon']
-        info['estado'] = self.data['forecast']['forecastday'][dayIndex]['day']['condition']['text']
-        info['chuva'] = self.data['forecast']['forecastday'][dayIndex]['day']['daily_chance_of_rain']
-        info['umidade'] = self.data['forecast']['forecastday'][dayIndex]['day']['avghumidity']
-        info['vento'] = self.data['forecast']['forecastday'][dayIndex]['day']['maxwind_kph']
-        info['temp_min'] = self.data['forecast']['forecastday'][dayIndex]['day']['mintemp_c']
-        info['temp_max'] = self.data['forecast']['forecastday'][dayIndex]['day']['maxtemp_c']
+        info['temp'] = self.data['current']['temp_c']
+        info['chuva'] = self.data['current']['precip_mm']
+        info['icone'] = self.data['current']['condition']['icon']
         return info
 
     def get_geolocator_info(self):
@@ -89,5 +84,9 @@ class DataProcessor:
     def get_alerts(self, query: str):
         self._set_data(query)
         return self.data['alerts']['alert']
+    
+if __name__ == '__main__':
+    processor = DataProcessor()
+    processor.get_general_info('Campinas', '2023-12-11')
 
 
