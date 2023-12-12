@@ -118,6 +118,7 @@ def home():
 def choseCity():
     
     city = str(request.form.get('citysel'))
+    session['city'] = city
     fig = data_plotter.plot_day_temp(city, str(dt.today()))
 
     dash_app.layout = html.Div([
@@ -135,6 +136,21 @@ def choseCity():
                            name=city)
 
     # return redirect(url_for('home'))
+
+@app.route('/changeTemp', methods=['POST'])
+def changeTemp():
+
+    fig = data_plotter.create_plot(session['city'], 'Temp °C', dt.today())
+
+    return redirect(url_for('home'))
+
+
+@app.route('/changeRain', methods=['POST'])
+def changeRain():
+
+    fig = data_plotter.create_plot(session['city'], 'Chuva %', dt.today())
+
+    return redirect(url_for('home'))
 
 
 
