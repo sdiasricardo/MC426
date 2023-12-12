@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import sys
 import os
+import dash
+import dash_core_components as dcc
+import dash_html_components as html
 current_directory = os.path.dirname(os.path.abspath(__file__))
 parent_directory = os.path.dirname(current_directory)
 sys.path.append(parent_directory + "/Entities")
@@ -17,11 +20,16 @@ from Services.DataPlot.DataAdapter import DataAdapter
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-data_plotter = data_plotter()
+data_plotter = DataPlotter()
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
+
 fig = data_plotter.plot_day_temp('Paris', '2023-12-12')
+
+dash_app.layout = html.Div([
+    dcc.Graph(id='graph-container', figure=fig)
+])
 
 db = DatabaseConnection()
 
@@ -113,12 +121,12 @@ def redirectPreferences():
 @app.route('/redirectHome', methods=['POST'])
 def redirectHome():
 
-    return render_template('home.html')
+    return redirect(url_for('home'))
 
 
 @app.route('/changeNotification', methods=['POST'])
 def changeNotification():
-    notifications = 'notifications' in request.form
+    notifications = 'notification' in request.form
 
     db.update_user_receive_notifications(session['username'], notifications)
 
@@ -137,7 +145,7 @@ def addCity():
     city = request.form['city']
 
     city = city.lower()
-    city[0] = city[0].upper()
+    city = city[0].upper() + city[1:]
 
     adapter = DataAdapter()
     response = adapter.get_data(city)
@@ -167,7 +175,7 @@ def removeCity():
     
     db.remove_city_to_user(session['username'], city)
     message = 'Cidade removida com sucesso!'
-    
+
     user = db.get_user_by_name(session['username'])
 
     return render_template('preferences.html', message=message, cities_list=user.Cities)
