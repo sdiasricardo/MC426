@@ -70,7 +70,7 @@ class DataProcessor:
         print(self.data)
         dayIndex = self._get_day_index(day)
         info = dict()
-        info['cidade'] = self.data['location']['name']
+        info['cidade'] = query
         info['temp'] = self.data['current']['temp_c']
         info['chuva'] = self.data['current']['precip_mm']
         info['icone'] = self.data['current']['condition']['icon']
