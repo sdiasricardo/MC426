@@ -9,6 +9,7 @@ from DataHandler import DataHandler
 class FileHandler(DataHandler):
     
     def getJSON(self, file_path: str):
+        print(file_path)
         with open(file_path, 'r') as file:
             json_data = json.load(file)
         return json_data

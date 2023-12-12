@@ -145,7 +145,8 @@ def choseCity():
                            city=geolocation_city,
                            temperature=int(info['temp']),
                            cities_list=user.Cities, 
-                           name=city)
+                           name=city,
+                           icon=info['icone'])
 
     # return redirect(url_for('home'))
 

@@ -203,7 +203,7 @@
             background-color: #ffffff; /* Set a background color */
             padding: 20px; /* Add some padding inside the dropdown */
             width: 120%; /* Set the width of the dropdown */
-            height: 60%;
+            height: 75%;
             margin: 10% auto; /* Center the dropdown horizontally and add margin at the top */
             text-align: center; /* Center the text inside the dropdown */
         }
@@ -230,7 +230,6 @@
     <div class="bars">
         <div class="sidebar" id="sidebar">
             <h2>Weather App</h2>
-            <a class="sidebar-item" href="#profile"><i class="fas fa-user" id="profile"></i></a>
 
 
             <a class="sidebar-item" href="{{ url_for('login') }}" id="logout"><i class="fas fa-sign-out-alt"></i></a>
@@ -243,14 +242,9 @@
         <div class="top-bar" id="top-bar">
             <div class="row" style="flex-direction: row;">
                     <div class="col-sm-12 d-flex justify-content-begin" style="display: flex;">
-                        <h2>{{city}}, {{temperature}}º</h2>
+                        <h2>Cidade atual: {{city}}, {{temperature}}º</h2>
                          <img src="{{icon}}">
                     </div>
-
-
-
-
-
 
             </div>
 
@@ -320,22 +314,18 @@
         sidebar.classList.add('sidebar-minimized');
 
         function toggleSidebar() {
-            const profileLink = document.getElementById('profile');
             const logoutLink = document.getElementById('logout');
 
             sidebar.classList.toggle('sidebar-minimized');
 
             if (sidebar.classList.contains('sidebar-minimized')) {
                 // Guarda os hrefs antes de remover
-                profileLink.setAttribute('data-href', profileLink.getAttribute('href'));
                 logoutLink.setAttribute('data-href', logoutLink.getAttribute('href'));
 
                 // Remove o href
-                profileLink.removeAttribute('href');
                 logoutLink.removeAttribute('href');
             } else {
                 // Restaura os hrefs
-                profileLink.setAttribute('href', profileLink.getAttribute('data-href'));
                 logoutLink.setAttribute('href', logoutLink.getAttribute('data-href'));
             }
 

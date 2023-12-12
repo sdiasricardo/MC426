@@ -19,7 +19,6 @@ api_key = os.getenv("weather_api_key")
 class ApiHandler():
 
     def write_cache(self, query_string, data):
-        print(current_directory + '/ApiCache/' + query_string + '.json')
         with open(absolute_directory + '/Services/DataPlot/DataCache/' + query_string + '.json', 'w') as f:
             json.dump(data, f)
 

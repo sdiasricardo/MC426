@@ -21,7 +21,7 @@ class AlertUsers:
         self.dbconnection = DatabaseConnection()
         self.users = self.dbconnection.get_all_users()
 
-    def calculate_time_difference(date_str, timezone_offset):
+    def calculate_time_difference(self, date_str, timezone_offset):
         input_date = datetime.fromisoformat(date_str)
         input_date_utc = input_date - timedelta(hours=timezone_offset)
         current_utc_time = datetime.utcnow()
@@ -39,11 +39,11 @@ class AlertUsers:
 
     def manage_alerts(self, user, alert_list):
         for alert in alert_list:
-            effective_date = alert["effective"]
+            effective_date = alert[0]["effective"]
             utc = self.get_utc(effective_date)
             effective_date = effective_date[:-6]
             effective_delta = self.calculate_time_difference(effective_date, utc)
-            if effective_delta.days == 0:
+            if effective_delta.days == -1:
                 print("Enviando email")
                 EmailSender.send_email(user, alert[0], alert[1])
 

@@ -99,11 +99,14 @@ class DatabaseConnection:
         for user_db in users:
 
             if possible_users_list[user_db[0]] is not None:
-                possible_users_list[user_db[0]].Cities.append(user_db[7])
+                if user_db[7] is not None:
+                    possible_users_list[user_db[0]].Cities.append(user_db[7])
                 continue
 
             user = User(user_db[0], user_db[1], user_db[2], user_db[3], receive_notifications=user_db[5])
-            user.Cities.append(user_db[7])
+
+            if user_db[7] is not None:
+                user.Cities.append(user_db[7])
 
             possible_users_list[user_db[0]] = user
 
@@ -131,7 +134,7 @@ class DatabaseConnection:
 
     def get_user_by_name(self, name):
         query = (sa.select(self.users, self.cities)) \
-            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id))\
+            .select_from(self.users.join(self.cities, self.cities.c.user_id == self.users.c.id, isouter=True))\
             .where(self.users.c.username == name)
 
         connection = self.engine.connect()
@@ -140,15 +143,19 @@ class DatabaseConnection:
 
         users_db = result.fetchall()
 
-        connection.close()
-        print(users_db)
+        users_db_list = []
+        for user_db in users_db:
+            if user_db is not None:
+                users_db_list.append(user_db)
 
-        if len(users_db) == 0:
+        connection.close()
+
+        if len(users_db_list) == 0:
             return User()
 
-        user = User(users_db[0][0], users_db[0][1], users_db[0][2], users_db[0][3], receive_notifications=users_db[0][5])
+        user = User(users_db_list[0][0], users_db_list[0][1], users_db_list[0][2], users_db_list[0][3], receive_notifications=users_db_list[0][5])
 
-        for user_db in users_db:
+        for user_db in users_db_list:
             user.Cities.append(user_db[7])
 
         return user
@@ -162,7 +169,11 @@ class DatabaseConnection:
     def add_city_to_user(self, username, city):
         user = self.get_user_by_name(username)
 
+        print(user.Cities)
+        print(city not in user.Cities)
+
         if city not in user.Cities:
+            print(user.Id, city)
             insert = sa.insert(self.cities).values(user_id=user.Id, city=city)
             self.execute_query(insert)
             return
@@ -192,7 +203,7 @@ class DatabaseConnection:
 
 if __name__ == '__main__':
     db = DatabaseConnection()
-
+    db.get_user_by_name('Fernando')
     db.get_all_users()
     db.update_user_receive_notifications('jonas', True)
     print()
