@@ -52,7 +52,7 @@ class EmailSender:
             
             INSTRUCTIONS = alert['instruction'].replace('\n', ' ')
             body = body.format(NAME=user.Name,
-                               AREAS = alert['areas'],
+                                AREAS = alert['areas'],
                                 SEVERITY= alert['severity'], 
                                 CERTAINTY= alert['certainty'],
                                 DESC = alert['desc'],
