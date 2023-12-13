@@ -18,8 +18,8 @@ from DataProcessor import DataProcessor
 
 
 class DataPlotter:
-    def __init__(self):
-        self.dataProcessor = DataProcessor()
+    def __init__(self, api_handler):
+        self.dataProcessor = DataProcessor(api_handler)
         
     def _set_df(self, query: str, day: str, info: str) -> dict | None:
         self.df = self.dataProcessor.get_df(query, day, info)
