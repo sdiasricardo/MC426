@@ -26,8 +26,10 @@ from Services.DataPlot.DataProcessor import DataProcessor
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-data_plotter = DataPlotter(ApiCaller())
-data_processor = DataProcessor()
+api_caller = ApiCaller()
+
+data_plotter = DataPlotter(api_caller)
+data_processor = DataProcessor(api_caller)
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 

@@ -8,11 +8,12 @@ sys.path.append(absolute_directory + "/ExternalConnections/api")
 
 
 from FileHandler import FileHandler
+from ApiHandler import ApiHandler
 
 class DataAdapter:
-    def __init__(self, api_handler) -> None:
-        self.apihandler = api_handler
+    def __init__(self, api_caller) -> None:
         self.filehandler = FileHandler()
+        self.apihandler = ApiHandler(api_caller)
     
     def _search_cache(self, target_file_name):
         target = f"{target_file_name}.json"

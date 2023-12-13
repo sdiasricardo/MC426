@@ -12,9 +12,9 @@ from datetime import datetime
 from ExternalConnections.api.geolocator import Geolocator
 
 class DataProcessor:
-    def __init__(self, ApiCaller):
+    def __init__(self, api_caller):
         self.data = None
-        self.dataAdapter = DataAdapter(ApiCaller)
+        self.dataAdapter = DataAdapter(api_caller)
 
     @staticmethod
     def clear_cache():

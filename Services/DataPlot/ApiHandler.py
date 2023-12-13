@@ -18,6 +18,6 @@ class ApiHandler(DataHandler):
             json.dump(data, f)
 
     def getJSON(self, query_place):
-        response = self.ApiCaller.callApi()
+        response = self.ApiCaller.callApi(query_place)
         self.write_cache(query_place, response)
         return response
