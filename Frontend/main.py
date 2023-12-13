@@ -18,17 +18,18 @@ from Entities.User import User
 from Services.UserService import UserService
 from Entities.Enums.UserSignupSituation import UserSignupSituation
 from ExternalConnections.database.DatabaseConnection import DatabaseConnection
-from ExternalConnections.api.apiHandler import ApiHandler
+from ExternalConnections.api.ApiCaller import ApiCaller
 from Services.DataPlot.DataPlotter import DataPlotter
 from Services.DataPlot.DataAdapter import DataAdapter
 from Services.DataPlot.DataProcessor import DataProcessor
-from ExternalConnections.api.geolocator import Geolocator
 
 app = Flask(__name__)
 app.secret_key = 'segredokk'
 
-data_plotter = DataPlotter(ApiHandler())
-data_processor = DataProcessor()
+api_caller = ApiCaller()
+
+data_plotter = DataPlotter(api_caller)
+data_processor = DataProcessor(api_caller)
 
 dash_app = dash.Dash(__name__, server=app, url_base_pathname='/dash/')
 
@@ -45,7 +46,7 @@ dash_app.layout = html.Div([
 db = DatabaseConnection()
 
 
-user_service = UserService(db)  # temporary for testing purposes
+user_service = UserService(db)
 
 
 @app.route('/')
