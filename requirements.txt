@@ -1,0 +1,8 @@
+numpy
+plotly
+pandas  
+flask
+sqlalchemy
+plot_data
+dash
+dash_core_components

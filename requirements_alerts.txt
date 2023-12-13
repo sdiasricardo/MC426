@@ -1,0 +1,6 @@
+datetime
+pandas
+email
+sqlalchemy
+geocoder
+geopy

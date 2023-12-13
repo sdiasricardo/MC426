@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- Add the link to FontAwesome or your preferred icon library here -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">        
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            margin: 0;
+        }
+
+        .dropbtn {
+              background-color: #4CAF50; /* Green background color */
+              color: white; /* White text color */
+              padding: 10px 20px; /* Padding for better appearance */
+              font-size: 16px; /* Font size */
+              border: none; /* Remove border */
+              border-radius: 5px; /* Add border-radius for rounded corners */
+              cursor: pointer; /* Add cursor pointer on hover */
+              margin-top: 10%;
+        }
+
+        .dropbtn:hover {
+              background-color: #45a049; /* Darker green color on hover */
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            background-color: #00;
+            padding: 10px;
+            margin-left: 0;
+        }
+
+        .navbar .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .navbar .dropdown .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            max-height: 200px; /* Set a maximum height for the dropdown */
+            overflow-y: auto; /* Enable vertical scrolling */
+        }
+
+        .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .navbar .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .navbar .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .top-bar {
+            background-color: #2DD5D5;
+            color: white;
+            padding: 15px; /* Adjust the padding to 0 on the right and left */
+            text-align: left;
+            position: fixed;
+            width: calc(100% - 60px); /* Set width to 100% minus the width of the sidebar */
+            height: 80px;
+            z-index: 1000;
+            transition: margin-left 0.3s ease;
+            margin-left: 60px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .sidebar {
+            width: 60px;
+            height: 100%;
+            background-color: #333;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            transition: width 0.3s ease;
+            overflow: hidden; /* Hide overflowing content */
+        }
+
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            margin-top: 50px;
+            flex-direction: column;
+            height: 80%
+        }
+
+        .weather-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            height: 78vh;
+            width: 100%;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #007bff;
+        }
+
+        .weather-info {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .sidebar-item {
+            margin-top: 10px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-minimized .sidebar-item,
+        .sidebar-minimized h2 {
+            opacity: 0;
+
+        }
+
+        .sidebar h2 {
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        iframe {
+            width: 100%; /* Set the width of the iframe to 100% of the container */
+            height: 85%; /* Set the desired height of the iframe */
+        }
+
+        .bars {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .button-container {
+          display: flex;
+          gap: 10px;
+        }
+
+        .button {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 10px;
+          border: 1px solid #3498db; /* Button border color */
+          border-radius: 5px;
+          cursor: pointer;
+          color: #fff; /* Text color */
+          background-color: #3498db; /* Button background color */
+          transition: background-color 0.3s ease; /* Add transition effect*/
+          margin-bottom: 20px;
+        }
+
+         .dropdown {
+            border: 2px solid #3498db; /* Add a border with a color of your choice */
+            border-radius: 8px; /* Add rounded corners to the border */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+            background-color: #ffffff; /* Set a background color */
+            padding: 20px; /* Add some padding inside the dropdown */
+            width: 120%; /* Set the width of the dropdown */
+            height: 75%;
+            margin: 10% auto; /* Center the dropdown horizontally and add margin at the top */
+            text-align: center; /* Center the text inside the dropdown */
+        }
+
+        .dropdown:hover {
+            background-color: #f5f5f5; /* Change the background color on hover */
+            transition: background-color 0.3s ease; /* Add a smooth transition effect */
+        }
+
+        .dropdown-btn {
+            background-color: #3498db;
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <div class="bars">
+        <div class="sidebar" id="sidebar">
+            <h2>Weather App</h2>
+
+
+            <a class="sidebar-item" href="{{ url_for('login') }}" id="logout"><i class="fas fa-sign-out-alt"></i></a>
+            <form action="/redirectPreferences" method="POST">
+                <button type="submit" class="sidebar-item btn btn-primary">Preferences</button>
+            </form>
+
+            <button class="toggle-button" onclick="toggleSidebar()"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="top-bar" id="top-bar">
+            <div class="row" style="flex-direction: row;">
+                    <div class="col-sm-12 d-flex justify-content-begin" style="display: flex;">
+                        <h2>Cidade atual: {{city}}, {{temperature}}º</h2>
+                         <img src="{{icon}}">
+                    </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+    <div class="content">
+        <div class="navbar">
+            <div class="container" style="border: max-content; margin-left: auto; margin-right: auto; size: 40%; margin-top: 2%;" id="notifications">
+                <form action="/choseCity" method="POST">
+                    
+                    <div class="row mb-3">
+                      
+                      <div class="col-sm-10">
+                        <select id="citysel" name="citysel" class="dropdown">
+                          {% for item in cities_list %}
+                            <option value="{{ item }}">{{ item }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-outline-primary">Change</button>
+                    </div>
+                    
+                    
+                    
+                  </form>
+            </div>
+        </div>
+        <div class="weather-container" id="wrap">
+            <div class="row" style="align-items: flex;">
+                <div class="col-sm-6 d-flex" style="padding-left: 1%;">
+                    <div>
+                        <h1>{{name}}</h1>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 d-flex justify-content-end" style="padding-right: 2%;">
+                    <div class="button-container">
+                        <form action="/changeTemp" method="POST">
+                            <button type="submit" class="sidebar-item btn btn-primary btn-"><i class="fas fa-thermometer-half"></i></button>
+                        </form>
+
+                        <form action="/changeRain" method="POST">
+                            <button type="submit" class="sidebar-item btn btn-primary btn-"><i class="fas fa-tint"></i></button>
+                        </form>
+                    </div>
+                </div>
+                
+                
+            </div>
+            
+
+                <iframe src="{{dash_url}}"></iframe>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        // Set initial state to minimized
+        const sidebar = document.getElementById('sidebar');
+        const topbar = document.getElementById('top-bar');
+        sidebar.style.width = '60px';  // Ensure initial width is set
+        sidebar.classList.add('sidebar-minimized');
+
+        function toggleSidebar() {
+            const logoutLink = document.getElementById('logout');
+
+            sidebar.classList.toggle('sidebar-minimized');
+
+            if (sidebar.classList.contains('sidebar-minimized')) {
+                // Guarda os hrefs antes de remover
+                logoutLink.setAttribute('data-href', logoutLink.getAttribute('href'));
+
+                // Remove o href
+                logoutLink.removeAttribute('href');
+            } else {
+                // Restaura os hrefs
+                logoutLink.setAttribute('href', logoutLink.getAttribute('data-href'));
+            }
+
+            // Ajusta a largura da topbar e da sidebar
+            topbar.style.marginLeft = sidebar.style.width === '60px' ? '250px' : '60px';
+            sidebar.style.width = sidebar.style.width === '60px' ? '250px' : '60px';
+        }
+
+        
+
+    </script>
+</body>
+</html>

@@ -1,3 +1,7 @@
+**__pycache__**
+.env
+.idea
+*.pyc
 seidel
 seidel.pub
 ExternalConnections/
