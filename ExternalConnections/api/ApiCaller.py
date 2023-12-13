@@ -11,19 +11,12 @@ absolute_directory = os.path.dirname(parent_directory)
 sys.path.append(absolute_directory)
 sys.path.append(absolute_directory + "/Services/Dataplot/")
 
-#from DataHandler import DataHandler
-
 load_dotenv()
 api_key = os.getenv("weather_api_key")
 
-class ApiHandler():
+class ApiCaller():
 
-    def write_cache(self, query_string, data):
-        with open(absolute_directory + '/Services/DataPlot/DataCache/' + query_string + '.json', 'w') as f:
-            json.dump(data, f)
-
-
-    def getJSON(self, query_place: str):
+    def callApi(self, query_place: str):
         '''
         Parameters:
         query_place: string representing a city or a tuple [latitude, longitude]
@@ -35,7 +28,6 @@ class ApiHandler():
         response = requests.get(base_url)
         if response.status_code == 200:
             response = response.json()
-            self.write_cache(query_place, response)
             return response
         elif response.status_code == 400:
             return None
