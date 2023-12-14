@@ -29,6 +29,8 @@ Classe que possui um método estático de enviar um email
 
 ### Database Connection
 
+Utilizando SQLAlchemy, define o banco de dados relacional dos usuários e trata dos registros de novos usuários
+
 ### DataProcessor
 
 Responsável por fornecer ao Frontend informações como temperatura, cidade atual, chuva; monta os dataframes necessários para os plots; limpa o cache do sistema
