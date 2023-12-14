@@ -23,9 +23,9 @@ Responsável por fazer a chamada da API (invocado pelo ApiHandler)
 
 ### Notifications
 
-#### EmailSender
+- ### EmailSender
 
-Classe que possui um método estático de enviar um email 
+    Classe que possui um método estático de enviar um email 
 
 ### Database Connection
 
